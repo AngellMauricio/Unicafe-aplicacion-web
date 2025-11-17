@@ -1,0 +1,113 @@
+/* =================== PALETA =================== */
+:root{
+  --brown-a:#8a633b;
+  --brown-b:#765433;
+  --cream:#efe3cf;
+  --panel-br:#bfa88a;
+  --text:#1f1f1f;
+  --accent:#2A9D8F;
+}
+
+/* =================== BASE =================== */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+  color:var(--text);
+  background:var(--cream);
+}
+
+/* =================== TOPBAR =================== */
+.topbar{
+  background:linear-gradient(180deg,var(--brown-a),var(--brown-b));
+  color:#fff;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  padding:10px 16px;
+  box-shadow:0 2px 4px rgba(0,0,0,.25);
+}
+.title{
+  margin:0; text-align:center;
+  letter-spacing:.06em; font-weight:800; font-size:30px;
+}
+.topbar__left{display:flex;align-items:center;gap:8px}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:#eee;color:#5a3c7a;display:grid;place-items:center;
+  border:2px solid rgba(0,0,0,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)
+}
+.login-pill{
+  display:inline-flex;align-items:center;padding:6px 12px;background:#fff;border-radius:10px;
+  color:#1f1f1f;font-weight:800;text-decoration:underline;border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 2px 0 rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+/* =================== NAV =================== */
+.nav{
+  background:#d9cfa8;
+  display:flex;justify-content:center;padding:10px 0;
+}
+.nav__wrap{display:flex;gap:50px;flex-wrap:wrap}
+.pill{
+  background:#fff;border-radius:20px;padding:6px 14px;text-decoration:none;
+  color:#3a3a3a;font-weight:600;transition:background .2s ease, transform .15s ease;
+}
+.pill:hover{background:#f3f3f3;transform:translateY(-2px)}
+.pill.is-active{background:var(--accent);color:#000000}
+
+/* =================== CONTENIDO =================== */
+.content{padding:26px 20px}
+
+/* 4 columnas como en tu diseño (la cuarta un poco más angosta) */
+.menu-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr .85fr;
+  gap:18px;
+}
+
+/* Panel/categoría */
+.category{
+  background:#fff;border:2px solid var(--panel-br);border-radius:8px;
+  padding:14px; box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.category.narrow{grid-column: auto / span 1}
+.category__title{
+  text-align:center;font-size:22px;font-weight:700;margin:6px 0 14px;
+}
+
+/* Tarjeta pequeña (imagen + texto) */
+.tile{
+  border:2px solid #a8d6c8;         /* borde tipo “cajita” azul verdoso */
+  border-radius:8px;
+  padding:8px 10px;
+  display:grid; grid-template-columns:64px 1fr;
+  gap:10px; align-items:center;
+  background:#fdfdfd; margin-bottom:12px;
+}
+.tile__img{
+  width:64px; height:64px; border-radius:6px;
+  border:1px solid #d4d4d4; overflow:hidden; background:#e7e7e7;
+  display:grid; place-items:center;
+}
+.tile__img img{width:100%;height:100%;object-fit:cover}
+
+.tile__info{display:flex;flex-direction:column;gap:4px}
+.tile__info strong{font-size:14px;line-height:1.2;color:#222}
+.price{
+  display:inline-block;margin-top:4px;padding:3px 8px;border-radius:8px;
+  background:#fff;border:1px solid #cfdad6;font-weight:700;font-size:13px;color:#333
+}
+
+/* Separadores de bloques estrechos */
+.mt{ margin-top:18px }
+
+/* =================== RESPONSIVO =================== */
+@media (max-width: 1100px){
+  .menu-grid{grid-template-columns: 1fr 1fr}
+}
+@media (max-width: 640px){
+  .menu-grid{grid-template-columns: 1fr}
+  .title{font-size:24px}
+  .nav__wrap{gap:20px}
+}

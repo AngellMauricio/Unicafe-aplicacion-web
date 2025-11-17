@@ -1,0 +1,36 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;          
+  display: flex;
+  flex-direction: column;     /* Ordena los elementos de arriba a abajo */
+}
+
+main.content {
+  flex: 1;                    /*Empuja el footer hacia abajo */
+}
+
+footer {
+  background-color:#765433;
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 13px;
+  padding: 0.5px 0;
+  line-height: 0.5;
+}
+.btn-contacto {
+  background-color: #c59b42;
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.btn-contacto:hover {
+  background-color: #4d3925;
+}

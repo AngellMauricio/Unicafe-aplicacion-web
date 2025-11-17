@@ -1,0 +1,236 @@
+:root {
+  --brown-a: #8a633b;
+  --brown-b: #765433;
+  --cream: #efe3cf;
+  --nav-bg: #d9cfa8;
+  --accent: #2A9D8F;
+  --card-bg: #ffffff;
+  --card-border: #bfa88a;
+  --input-bg: #f8f8f8;
+  --button-green: #4db8a8;
+  --button-gray: #8a8686;
+  --button-update: #8a8e8c;
+  --table-bg: #8a8888;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--cream);
+  color: #1f1f1f;
+  min-height: 100vh;
+}
+
+/* TOPBAR */
+.topbar {
+  background: linear-gradient(180deg, var(--brown-a), var(--brown-b));
+  color: #fff;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 10px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+}
+
+.topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eee;
+  color: #5a3c7a;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  border: 2px solid rgba(0, 0, 0, .08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9);
+}
+
+.login-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #fff;
+  border-radius: 10px;
+  color: #1f1f1f;
+  font-weight: 800;
+  text-decoration: underline;
+  border: 1px solid rgba(0, 0, 0, .08);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .10), inset 0 1px 0 rgba(255, 255, 255, .9);
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .06em;
+  margin: 0;
+}
+
+/* NAV */
+.nav {
+  background: var(--nav-bg);
+  display: flex;
+  justify-content: center;
+  padding: 10px 14px;
+}
+
+.nav__wrap {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  background: #fff;
+  border-radius: 20px;
+  padding: 6px 14px;
+  text-decoration: none;
+  color: #3a3a3a;
+  font-weight: 600;
+  transition: background .2s ease, transform .15s ease;
+}
+
+.pill:hover {
+  background: #f3f3f3;
+  transform: translateY(-2px);
+}
+
+.pill.is-active {
+  background: var(--accent);
+  color: #000;
+}
+
+/* CONTENT */
+.content {
+  padding: 30px 40px;
+}
+
+.form-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border: 3px solid var(--card-border);
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .08);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 24px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-row label {
+  min-width: 140px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d2d2d;
+  text-align: left;
+}
+
+.form-row input,
+.form-row select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  background: var(--input-bg);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+/* BUTTONS */
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.btn-action {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+  min-width: 120px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-add { background: var(--button-green); color: #fff; }
+.btn-delete { background: var(--button-gray); color: #fff; }
+.btn-update { background: var(--button-update); color: #fff; }
+
+/* Al presionar */
+.btn-action:active {
+  background: var(--accent) !important;
+  transform: scale(0.97);
+}
+
+/* TABLE */
+.data-area {
+  background: var(--table-bg);
+  border: 2px solid #b8a8a8;
+  border-radius: 6px;
+  padding: 16px;
+  min-height: 200px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  font-size: 13px;
+  color: #2d2d2d;
+  border-bottom: 1px solid #b8a8a8;
+}
+
+thead {
+  background: rgba(255, 255, 255, .3);
+}
+
+th {
+  font-weight: 700;
+  color: #333;
+}
+
+tbody tr:hover {
+  background: rgba(255, 255, 255, .2);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .form-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+

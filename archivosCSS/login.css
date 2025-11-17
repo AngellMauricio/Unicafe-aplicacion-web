@@ -1,0 +1,129 @@
+/* ========== Paleta ========== */
+:root{
+  --topbar-a:#8a633b;   /* café claro */
+  --topbar-b:#765433;   /* café oscuro */
+  --cream:#efe3cf;      /* fondo crema */
+  --stroke:#6b5b4b;     /* línea taza */
+  --pill-bg:#ffffff;    /* campos */
+  --pill-br:#a7d4bf;    /* borde verdoso */
+  --accent:#4aa36c;     /* verde botón */
+  --accent-hover:#5bb07b;
+  --text:#1f1f1f;
+}
+
+/* ========== Base ========== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Arial,sans-serif;
+  color:var(--text);
+  background:var(--cream);
+}
+
+/* ========== Topbar ========== */
+.topbar{
+  width:100%;
+  background:linear-gradient(180deg,var(--topbar-a),var(--topbar-b));
+  color:#fff;
+  padding:16px 24px;
+  text-align:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.25);
+}
+.topbar h1{
+  margin:0;
+  letter-spacing:.06em;
+  font-size:28px;
+  font-weight:800;
+}
+
+/* ========== Escenario central ========== */
+.stage{
+  position:relative;
+  min-height:calc(100vh - 64px);
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+
+/* Taza SVG */
+.cup{
+  width:min(760px,90vw);
+  height:auto;
+  opacity:.85;
+  display:block;
+  margin:0 auto;        /*  centra horizontalmente */
+  justify-self:center;  /*  centra dentro del grid */
+  align-self:center; 
+}
+
+/* ========== Formulario sobre la taza ========== */
+/* === FORMULARIO sobre la taza === */
+.login {
+  position: absolute;
+  top: 55%;              /* centrado vertical */
+  left: 48%;             /*  centrado horizontal */
+  transform: translate(-50%, -50%); /*  centra perfecto */
+  display: grid;
+  gap: 10px;
+  width: min(200px, 70vw);
+  text-align: center;    /*alinea contenido dentro */
+
+}
+
+.login input,
+.login .btn{
+  height:32px;
+  border-radius:10px;
+  border:1.5px solid var(--pill-br);
+  background:var(--pill-bg);
+  padding:0 10px;
+  font-weight:700;
+  letter-spacing:.02em;
+  box-shadow:0 1px 2px rgba(0,0,0,.08),
+             inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+/* Placeholder en mayúsculas */
+::placeholder{ color:#6b6b6b; font-weight:700; }
+
+/* Enfoque */
+.login input:focus{
+  outline:none;
+  box-shadow:0 0 0 4px rgba(74,163,108,.18),
+             0 1px 2px rgba(0,0,0,.08);
+}
+
+/* Botón */
+.btn{
+  background:#ffffff;
+  color:#0e3a23;
+  cursor:pointer;
+  transition:transform .12s ease,
+             background .2s ease,
+             border-color .2s ease;
+}
+.btn:hover{
+  background:#eef7f1;
+  transform:translateY(-1px);
+  border-color:#79c3a3;
+}
+
+.btn:active{
+  transform:translateY(0);
+}
+
+/* Solo para lectores de pantalla */
+.sr-only{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+/* ========== Responsivo ========== */
+@media (max-width: 520px){
+  .topbar h1{ font-size:22px }
+  .login{ width:min(240px,86vw); transform:translate(-50%,-6%) }
+}
+
