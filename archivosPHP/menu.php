@@ -21,7 +21,7 @@ if (!isset($_SESSION['usuario'])) {
     <header class="topbar">
       <div class="topbar__left">
         <span class="avatar" aria-hidden="true">👤</span>
-        <a class="login-pill" href="/archivosHTML/login.html"><?php echo $_SESSION['usuario']; ?></a> <!-- aqui agrego el nombre de usaurio-->
+        <a class="login-pill" href="/archivosHTML/login.html"><?php echo $_SESSION['usuario']; ?></a> <!-- aqui se muestra el nombre de usaurio-->
       </div>
       <h1 class="title">CAFETERIA UTHH</h1>
       <div class="topbar__right"></div>
