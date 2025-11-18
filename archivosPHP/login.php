@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = trim($_POST['password'] ?? '');
 
     $sql  = "SELECT intIdUsuario, vchNombres, vchCorreo, vchPassword, intIdRol
-             FROM tblusuario WHERE vchCorreo = ? LIMIT 1";
+            FROM tblusuario WHERE vchCorreo = ? LIMIT 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
