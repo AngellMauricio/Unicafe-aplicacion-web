@@ -16,16 +16,23 @@ if (!isset($_SESSION['usuario'])) {
 </head>
 <body>
   <div class="app">
-    <!-- TOPBAR -->
-    <header class="topbar">
+     <header class="topbar">
       <div class="topbar__left">
-      <span class="avatar" aria-hidden="true">👤</span>
-      <a class="login-pill" href="archivosHTML/login.html"><?php echo $_SESSION['usuario']; ?></a>
-      </div>
+        <span class="avatar" aria-hidden="true">👤</span>
+        
+        <div class="user-dropdown">
+            <span class="user-trigger">
+                Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?> <span style="font-size:0.8em">▼</span>
+            </span>
+            <div class="dropdown-content">
+                <a href="archivosPHP/mi_cuenta.php">⚙️ Mi Cuenta</a>
+                <a href="archivosPHP/logout.php" class="logout-link">🚪 Cerrar Sesión</a>
+            </div>
+        </div>
+        </div>
       <h1 class="title">CAFETERIA UTHH</h1>
       <div class="topbar__right"></div>
     </header>
-
     <!-- NAV -->
     <nav class="nav">
       <div class="nav__wrap">
