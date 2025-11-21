@@ -1,0 +1,64 @@
+/* Reutilizamos los estilos corregidos de usuarios.php */
+        .list-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-table {
+            width: 100%;
+            margin-top: 1rem;
+            border-collapse: collapse;
+        }
+
+        .user-table th,
+        .user-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .user-table th {
+            background-color: #f4f4f4;
+        }
+
+        .user-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .action-links .edit-link {
+            color: #007bff;
+            margin-right: 10px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .action-links .delete-link {
+            color: #dc3545;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .form-cancel-btn {
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+        }
+
+        .form-container h2,
+        .list-container h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-column .actions {
+            margin-bottom: 0;
+            align-items: flex-start;
+        }
+
+        .form-column .data-area {
+            margin-top: 0;
+        }
