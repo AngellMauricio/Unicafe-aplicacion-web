@@ -1,4 +1,5 @@
 <?php
+session_start(); // Necesario para verificar $_SESSION
 include 'conexion.php';
 
 // Lógica de Edición
@@ -35,7 +36,57 @@ $res_lista = $conn->query($sql_lista);
     <meta charset="utf-8" />
     <title>Gestionar Términos — Cafetería UTHH</title>
     <link rel="stylesheet" href="../archivosCSS/registro.css"> <!-- Reutilizamos estilos de admin -->
-    <link rel="stylesheet" href="../archivosCSS/gestion_terminos.css">
+    <!-- <link rel="stylesheet" href="../archivosCSS/gestion_terminos.css">  <- Este no existe, usa estilos en línea o registro.css -->
+    <style>
+        /* Estilos específicos para esta página si no usas gestion_terminos.css */
+        .list-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .user-table th,
+        .user-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .user-table th {
+            background: #f4f4f4;
+        }
+
+        .action-links a {
+            margin-right: 10px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .edit-link {
+            color: #007bff;
+        }
+
+        .delete-link {
+            color: #dc3545;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #c8c8c8;
+            border-radius: 4px;
+            min-height: 100px;
+            font-family: inherit;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,13 +97,17 @@ $res_lista = $conn->query($sql_lista);
         </header>
         <nav class="nav">
             <div class="nav__wrap">
-                <a class="pill is-active" href="/archivosPHP/index.php">HOME <span class="ico">🏠</span></a>
-                <a class="pill" href="/archivosPHP/productos.php">PRODUCTOS <span class="ico">📦</span></a>
-                <a class="pill is-active" href="/archivosPHP/gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-                <a class="pill" href="/archivosPHP/menu.php">MENÚ <span class="ico">🍽️</span></a>
-                <a class="pill" href="/archivosPHP/pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
-                <?php if(isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1){ ?>
-                <a class="pill" href="/archivosPHP/usuarios.php">USUARIOS <span class="ico">👤</span></a>
+                <a class="pill" href="../index.html">HOME <span class="ico">🏠</span></a> <!-- Corregida ruta relativa -->
+                <a class="pill" href="productos.php">PRODUCTOS <span class="ico">📦</span></a> <!-- Corregida ruta relativa -->
+                <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+                <a class="pill" href="menu.php">MENÚ <span class="ico">🍽️</span></a>
+                <a class="pill" href="pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
+
+                <!-- AQUÍ ESTABA EL ERROR -->
+                <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
+                    <a class="pill" href="usuarios.php">USUARIOS <span class="ico">👤</span></a>
+                <?php } ?> <!-- ¡ESTA LLAVE FALTABA! -->
+
             </div>
         </nav>
 
