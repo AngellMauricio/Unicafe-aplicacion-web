@@ -1,7 +1,7 @@
 <?php
 include 'conexion.php';
 
-// --- 1. OBTENER DATOS PARA LISTAS DESPLEGABLES (Comboboxes) ---
+// --- 1. OBTENER DATOS PARA LISTAS ---
 $sql_categorias = "SELECT intIdCategoria, vchCategoria FROM tblcategorias";
 $res_categorias = $conn->query($sql_categorias);
 
@@ -11,7 +11,6 @@ $res_proveedores = $conn->query($sql_proveedores);
 // --- 2. LÓGICA PARA EDICIÓN ---
 $modo_edicion = false;
 $id_prod_editar = 0;
-// Variables por defecto vacías
 $nom_val = "";
 $desc_val = "";
 $stock_val = "";
@@ -19,6 +18,7 @@ $pcompra_val = "";
 $pventa_val = "";
 $cat_val = "";
 $prov_val = "";
+$img_val = ""; // Variable para la imagen
 
 $accion_form = "procesar_producto.php?accion=agregar";
 
@@ -40,12 +40,13 @@ if (isset($_GET['accion']) && $_GET['accion'] == 'editar' && isset($_GET['id']))
         $pventa_val = $fila['decPrecioVenta'];
         $cat_val = $fila['intIdCategoria'];
         $prov_val = $fila['vchRFCProveedor'];
+        $img_val = $fila['vchImagen']; // Recuperamos la ruta de la imagen
     }
     $stmt->close();
 }
 
-// --- 3. LÓGICA PARA EL LISTADO (JOIN para ver nombres en vez de IDs) ---
-$sql_lista = "SELECT P.intIdProducto, P.vchNombre, P.intStock, P.decPrecioVenta, 
+// --- 3. LÓGICA PARA EL LISTADO ---
+$sql_lista = "SELECT P.intIdProducto, P.vchNombre, P.intStock, P.decPrecioVenta, P.vchImagen,
                     C.vchCategoria, PR.vchEmpresa 
             FROM tblproductos P
             JOIN tblcategorias C ON P.intIdCategoria = C.intIdCategoria
@@ -60,10 +61,8 @@ $res_lista = $conn->query($sql_lista);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gestión de Productos — Cafetería UTHH</title>
-    <!-- Ajusta la ruta del CSS según tu estructura (ej: ../archivosCSS/registro.css) -->
     <link rel="stylesheet" href="../archivosCSS/registro.css">
     <link rel="stylesheet" href="../archivosCSS/gestion_productos.css">
-    
 </head>
 
 <body>
@@ -79,21 +78,20 @@ $res_lista = $conn->query($sql_lista);
         <nav class="nav">
             <div class="nav__wrap">
                 <a class="pill" href="../index.html">🏠 HOME</a>
-                <a class="pill" href="/archivosPHP/productos.php">📦 PRODUCTOS (Vista Cliente)</a>
+                <a class="pill" href="../archivosHTML/productos.php">📦 PRODUCTOS (Vista Cliente)</a>
                 <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-                <a class="pill" href="../archivosHTML/menu.html"><span class="ico">🍽️</span> MENÚ</a>
-                <a class="pill" href="../archivosHTML/pedidos.html"><span class="ico">🧾</span> PEDIDOS</a>
                 <a class="pill" href="usuarios.php">👤 USUARIOS</a>
             </div>
         </nav>
 
         <main class="content">
 
-            <!-- CONTENEDOR FORMULARIO -->
+            <!-- FORMULARIO -->
             <div class="form-container">
                 <h2><?php echo $modo_edicion ? 'Modificar Producto' : 'Agregar Nuevo Producto'; ?></h2>
 
-                <form action="<?php echo $accion_form; ?>" method="post">
+                <!-- IMPORTANTE: enctype="multipart/form-data" es necesario para subir archivos -->
+                <form action="<?php echo $accion_form; ?>" method="post" enctype="multipart/form-data">
                     <div class="form-grid">
 
                         <!-- COLUMNA 1 -->
@@ -101,13 +99,12 @@ $res_lista = $conn->query($sql_lista);
                             <div class="form-row"><label>Nombre</label><input type="text" name="nombre" value="<?php echo $nom_val; ?>" required /></div>
                             <div class="form-row"><label>Descripción</label><input type="text" name="descripcion" value="<?php echo $desc_val; ?>" required /></div>
 
-                            <!-- Select de Categorías -->
                             <div class="form-row">
                                 <label>Categoría</label>
                                 <select name="categoria" required>
                                     <option value="">Seleccionar...</option>
                                     <?php
-                                    $res_categorias->data_seek(0); // Reiniciar puntero
+                                    $res_categorias->data_seek(0);
                                     while ($cat = $res_categorias->fetch_assoc()): ?>
                                         <option value="<?php echo $cat['intIdCategoria']; ?>"
                                             <?php echo ($cat_val == $cat['intIdCategoria']) ? 'selected' : ''; ?>>
@@ -119,7 +116,6 @@ $res_lista = $conn->query($sql_lista);
 
                             <div class="form-row"><label>Stock</label><input type="number" name="stock" value="<?php echo $stock_val; ?>" required /></div>
 
-                            <!-- Botones -->
                             <div class="actions">
                                 <button class="btn-action btn-add" type="submit">
                                     <?php echo $modo_edicion ? 'Guardar Cambios' : 'Agregar Producto'; ?>
@@ -135,7 +131,6 @@ $res_lista = $conn->query($sql_lista);
                             <div class="form-row"><label>Precio Compra</label><input type="number" step="0.01" name="precio_compra" value="<?php echo $pcompra_val; ?>" required /></div>
                             <div class="form-row"><label>Precio Venta</label><input type="number" step="0.01" name="precio_venta" value="<?php echo $pventa_val; ?>" required /></div>
 
-                            <!-- Select de Proveedores -->
                             <div class="form-row">
                                 <label>Proveedor</label>
                                 <select name="proveedor" required>
@@ -151,14 +146,25 @@ $res_lista = $conn->query($sql_lista);
                                 </select>
                             </div>
 
-                            <!-- Espaciador gris -->
-                            <div class="data-area"></div>
+                            <!-- ÁREA DE IMAGEN (Reemplaza al data-area vacío) -->
+                            <div class="image-upload-area">
+                                <!-- Previsualización -->
+                                <img id="preview" src="<?php echo !empty($img_val) ? '../' . $img_val : 'https://placehold.co/300x200?text=Sin+Imagen'; ?>" alt="Vista previa">
+
+                                <!-- Input para subir archivo -->
+                                <label style="color: white; font-size: 0.9rem; margin-bottom: 5px;">Subir Imagen:</label>
+                                <input type="file" name="imagen" class="image-input" accept="image/*" onchange="mostrarVistaPrevia(event)">
+
+                                <!-- Input oculto para mantener la imagen anterior al editar si no se sube una nueva -->
+                                <input type="hidden" name="imagen_actual" value="<?php echo $img_val; ?>">
+                            </div>
+
                         </div>
                     </div>
                 </form>
             </div>
 
-            <!-- CONTENEDOR LISTA -->
+            <!-- LISTA -->
             <div class="list-container">
                 <h2>Inventario Actual</h2>
 
@@ -166,11 +172,11 @@ $res_lista = $conn->query($sql_lista);
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Img</th>
                             <th>Producto</th>
                             <th>Categoría</th>
                             <th>Stock</th>
                             <th>P. Venta</th>
-                            <th>Proveedor</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -179,22 +185,23 @@ $res_lista = $conn->query($sql_lista);
                             <?php while ($row = $res_lista->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo $row['intIdProducto']; ?></td>
+                                    <td>
+                                        <?php if (!empty($row['vchImagen'])): ?>
+                                            <img src="../<?php echo $row['vchImagen']; ?>" class="thumb-img" alt="img">
+                                        <?php else: ?>
+                                            <span>🚫</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php echo htmlspecialchars($row['vchNombre']); ?></td>
                                     <td><?php echo htmlspecialchars($row['vchCategoria']); ?></td>
-
-                                    <!-- Resaltar si hay poco stock -->
                                     <td style="<?php echo ($row['intStock'] < 10) ? 'color:red; font-weight:bold;' : ''; ?>">
                                         <?php echo $row['intStock']; ?>
                                     </td>
-
                                     <td>$<?php echo number_format($row['decPrecioVenta'], 2); ?></td>
-                                    <td><?php echo htmlspecialchars($row['vchEmpresa']); ?></td>
-
                                     <td class='action-links'>
                                         <a href="gestion_productos.php?accion=editar&id=<?php echo $row['intIdProducto']; ?>" class="edit-link">Modificar</a>
                                         <a href="procesar_producto.php?accion=eliminar&id=<?php echo $row['intIdProducto']; ?>"
-                                            class="delete-link"
-                                            onclick="return confirm('¿Eliminar este producto permanentemente?');">Eliminar</a>
+                                            class="delete-link" onclick="return confirm('¿Eliminar permanentemente?');">Eliminar</a>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -209,6 +216,18 @@ $res_lista = $conn->query($sql_lista);
 
         </main>
     </div>
+
+    <!-- Script simple para vista previa de imagen -->
+    <script>
+        function mostrarVistaPrevia(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </body>
 
 </html>

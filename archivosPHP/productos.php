@@ -4,7 +4,8 @@
 include '../archivosPHP/conexion.php';
 
 // 2. Preparamos la consulta SQL
-$sql = "SELECT vchNombre, vchDescripcion, intStock, decPrecioVenta 
+// IMPORTANTE: Agregamos 'vchImagen' a la selección
+$sql = "SELECT vchNombre, vchDescripcion, intStock, decPrecioVenta, vchImagen 
         FROM tblproductos";
 
 $resultado_productos = $conn->query($sql);
@@ -20,8 +21,6 @@ $resultado_productos = $conn->query($sql);
   <link rel="stylesheet" href="../archivosCSS/productos.css" />
   <link rel="stylesheet" href="../archivosCSS/footer.css" />
 
-  <!-- ESTILOS PARA LA VENTANA MODAL (DETALLE DEL PRODUCTO) -->
-  
 </head>
 
 <body>
@@ -59,19 +58,29 @@ $resultado_productos = $conn->query($sql);
         if ($resultado_productos && $resultado_productos->num_rows > 0) {
           while ($fila = $resultado_productos->fetch_assoc()) {
             // Preparamos los datos para pasarlos a JavaScript
-            // "addslashes" evita errores si el texto tiene comillas
             $nombre = addslashes($fila['vchNombre']);
             $desc = addslashes($fila['vchDescripcion']);
             $precio = $fila['decPrecioVenta'];
             $stock = $fila['intStock'];
 
-            // URL de imagen generada (placeholder)
-            $imgUrl = "https://placehold.co/600x400/d9cfa8/765433?text=" . urlencode($fila['vchNombre']);
+            // ==========================================================
+            // LÓGICA DE IMAGEN REAL vs PLACEHOLDER
+            // ==========================================================
+            $imgDb = $fila['vchImagen']; // Ruta guardada en BD (ej: imagenes_productos/foto.jpg)
+            
+            // Verificamos si hay algo guardado Y si el archivo realmente existe
+            // Usamos "../" porque estamos en la carpeta archivosHTML y la carpeta imagenes_productos está fuera
+            if (!empty($imgDb) && file_exists("../" . $imgDb)) {
+                $imgUrl = "../" . $imgDb; // Usar imagen real
+            } else {
+                // Usar placeholder si no hay imagen
+                $imgUrl = "https://placehold.co/600x400/d9cfa8/765433?text=" . urlencode($fila['vchNombre']);
+            }
         ?>
 
             <!-- PRODUCTO INDIVIDUAL -->
             <article class="product">
-              <!-- AL HACER CLIC EN LA IMAGEN: Llamamos a abrirModal() -->
+              <!-- AL HACER CLIC EN LA IMAGEN: Pasamos la $imgUrl correcta -->
               <div class="product__img" onclick="abrirModal('<?php echo $nombre; ?>', '<?php echo $desc; ?>', '<?php echo $precio; ?>', '<?php echo $stock; ?>', '<?php echo $imgUrl; ?>')">
                 <img src="<?php echo $imgUrl; ?>" alt="<?php echo htmlspecialchars($fila['vchNombre']); ?>">
               </div>
@@ -102,9 +111,7 @@ $resultado_productos = $conn->query($sql);
     </form>
   </footer>
 
-  <!-- ========================================== -->
-  <!-- ESTRUCTURA DE LA VENTANA MODAL (OCULTA) -->
-  <!-- ========================================== -->
+  <!-- ESTRUCTURA DE LA VENTANA MODAL -->
   <div id="productModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="cerrarModal()">&times;</span>
@@ -122,20 +129,15 @@ $resultado_productos = $conn->query($sql);
           <p id="modalDesc" class="modal-desc">Descripción detallada del producto.</p>
           <div id="modalPrice" class="modal-price">$0.00</div>
 
-          <!-- Botón de acción simulado -->
           <button class="btn-contacto" style="width: 100%; margin-top: auto;">¡Pedir Ahora!</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- SCRIPT PARA MANEJAR LA MODAL            -->
-  <!-- ========================================== -->
+  <!-- SCRIPT PARA MANEJAR LA MODAL -->
   <script>
-    // Función para abrir el modal y llenar los datos
     function abrirModal(nombre, descripcion, precio, stock, imgUrl) {
-      // 1. Obtener referencias a los elementos del modal
       var modal = document.getElementById("productModal");
       var mTitle = document.getElementById("modalTitle");
       var mDesc = document.getElementById("modalDesc");
@@ -143,29 +145,22 @@ $resultado_productos = $conn->query($sql);
       var mStock = document.getElementById("modalStock");
       var mImg = document.getElementById("modalImg");
 
-      // 2. Llenar los elementos con la información recibida
       mTitle.innerText = nombre;
       mDesc.innerText = descripcion;
       mPrice.innerText = "$" + parseFloat(precio).toFixed(2) + " MXN";
       mStock.innerText = "Disponibles: " + stock + " unidades";
       mImg.src = imgUrl;
 
-      // 3. Mostrar el modal
       modal.style.display = "block";
-
-      // Bloquear el scroll del fondo
       document.body.style.overflow = "hidden";
     }
 
-    // Función para cerrar el modal
     function cerrarModal() {
       var modal = document.getElementById("productModal");
       modal.style.display = "none";
-      // Reactivar el scroll
       document.body.style.overflow = "auto";
     }
 
-    // Cerrar si se hace clic fuera del contenido del modal
     window.onclick = function(event) {
       var modal = document.getElementById("productModal");
       if (event.target == modal) {
@@ -175,7 +170,6 @@ $resultado_productos = $conn->query($sql);
   </script>
 
 </body>
-
 </html>
 
 <?php
