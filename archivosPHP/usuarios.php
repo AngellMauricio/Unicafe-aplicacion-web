@@ -103,14 +103,14 @@ $resultado_lista = $conn->query($sql_select);
     <nav class="nav">
       <div class="nav__wrap">
         <!-- Desde /archivosPHP/ para ir a /archivosHTML/ usa ../ -->
-        <a class="pill" href="../index.html"><span class="ico">🏠</span> HOME</a>
-        <a class="pill" href="/archivosPHP/productos.php"><span class="ico">📦</span> PRODUCTOS</a>
-        <a class="pill" href="../archivosPHP/menu.php"><span class="ico">🍽️</span> MENÚ</a>
-        <a class="pill" href="../archivosHTML/pedidos.html"><span class="ico">🧾</span> PEDIDOS</a>
+        <a class="pill" href="/archivosPHP/index.php"><span class="ico">🏠</span> HOME</a>
+        <a class="pill" href="productos.php"><span class="ico">📦</span> PRODUCTOS</a>
+        <a class="pill" href="menu.php"><span class="ico">🍽️</span> MENÚ</a>
+        <a class="pill" href="pedidos.php"><span class="ico">🧾</span> PEDIDOS</a>
         <!-- Esta página -->
         <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
-          <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-          <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
+          <a class="pill" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+          <a class="pill is-active" href="usuarios.php">REGISTROS <span class="ico">👤</span></a>
         <?php } ?>
       </div>
     </nav>
