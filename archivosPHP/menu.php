@@ -198,27 +198,40 @@ while ($row = $res->fetch_assoc()) {
             <h3 class="category__title"><?php echo htmlspecialchars($nombreCat); ?></h3>
 
             <?php foreach ($items as $p): ?>
-              <article class="tile">
-                <div class="tile-row">
-                  <div class="tile__img">
-                    <img src="<?php echo htmlspecialchars($p['vchImagen']); ?>" alt="<?php echo htmlspecialchars($p['vchNombre']); ?>">
-                  </div>
-                  <div class="tile__info">
-                    <strong><?php echo htmlspecialchars($p['vchNombre']); ?></strong>
-                    <span class="price">$<?php echo number_format($p['decPrecio'], 2); ?></span>
-                  </div>
-                  <div class="tile__actions">
-                    <!-- EDITAR -->
-                    <a class="btn-crud btn-editar" href="menu.php?modo=editar&id=<?php echo $p['intIdPlatillo']; ?>">Editar</a>
+  <article class="tile">
+    <div class="tile-row">
+      
+      <div class="tile__img">
+        <img 
+          src="<?php echo $p['vchImagen']; ?>" 
+          alt="<?php echo htmlspecialchars($p['vchNombre']); ?>">
+      </div>
 
-                    <!-- ELIMINAR -->
-                    <form action="menu_acciones.php?accion=eliminar&id=<?php echo $p['intIdPlatillo']; ?>" method="post" onsubmit="return confirm('¿Eliminar este platillo?');">
-                      <button type="submit" class="btn-crud btn-eliminar">Eliminar</button>
-                    </form>
-                  </div>
-                </div>
-              </article>
-            <?php endforeach; ?>
+      <div class="tile__info">
+        <strong><?php echo htmlspecialchars($p['vchNombre']); ?></strong>
+        <span class="price">$<?php echo number_format($p['decPrecio'], 2); ?></span>
+      </div>
+
+      <div class="tile__actions">
+        <!-- EDITAR -->
+        <a class="btn-crud btn-editar" 
+           href="menu.php?modo=editar&id=<?php echo $p['intIdPlatillo']; ?>">
+           Editar
+        </a>
+
+        <!-- ELIMINAR -->
+        <form 
+          action="menu_acciones.php?accion=eliminar&id=<?php echo $p['intIdPlatillo']; ?>" 
+          method="post" 
+          onsubmit="return confirm('¿Eliminar este platillo?');">
+          <button type="submit" class="btn-crud btn-eliminar">Eliminar</button>
+        </form>
+      </div>
+
+    </div>
+  </article>
+<?php endforeach; ?>
+
 
           </section>
         <?php endforeach; ?>
