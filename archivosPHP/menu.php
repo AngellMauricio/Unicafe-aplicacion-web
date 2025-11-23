@@ -19,7 +19,6 @@ if (!isset($_SESSION['usuario'])) {
 <body>
   <div class="app">
 
-    <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar__left">
         <span class="avatar" aria-hidden="true">👤</span>
@@ -35,7 +34,6 @@ if (!isset($_SESSION['usuario'])) {
         </div>
         </div>
       <h1 class="title">CAFETERIA UTHH</h1>
-      <div class="topbar__right"></div>
     </header>
     <!-- NAV -->
     <nav class="nav">
@@ -47,181 +45,119 @@ if (!isset($_SESSION['usuario'])) {
         <a class="pill" href="/archivosPHP/usuarios.php"><span class="ico">👤</span>REGISTROS</a>
       </div>
     </nav>
-    <!-- CONTENIDO -->
+
     <main class="content">
+
+      <!-- ========== FORMULARIO: AGREGAR ========== -->
+      <?php if (!$platilloEditar): ?>
+      <form class="form-crud" action="menu_acciones.php?accion=agregar" method="post" enctype="multipart/form-data">
+        <h2>Agregar nuevo platillo</h2>
+
+        <label>Categoría</label>
+        <input type="text" name="categoria" placeholder="Guisados, Tacos, Tortas..." required>
+
+        <label>Nombre del platillo</label>
+        <input type="text" name="nombre" placeholder="Ej. Torta de milanesa" required>
+
+        <label>Precio</label>
+        <input type="number" step="0.01" name="precio" placeholder="Ej. 40" required>
+
+        <label>Imagen del Platillo</label>
+        <input type="file" name="imagen" accept="image/*">
+
+        <button type="submit">Agregar platillo</button>
+      </form>
+      <?php endif; ?>
+
+      <!-- ========== FORMULARIO: EDITAR ========== -->
+      <?php if ($platilloEditar): ?>
+      <form class="form-crud" action="menu_acciones.php?accion=actualizar&id=<?php echo $platilloEditar['intIdPlatillo']; ?>" method="post" enctype="multipart/form-data">
+        <h2>Editar platillo</h2>
+
+        <label>Categoría</label>
+        <input type="text" name="categoria" value="<?php echo htmlspecialchars($platilloEditar['vchCategoria']); ?>" required>
+
+        <label>Nombre del platillo</label>
+        <input type="text" name="nombre" value="<?php echo htmlspecialchars($platilloEditar['vchNombre']); ?>" required>
+
+        <label>Precio</label>
+        <input type="number" step="0.01" name="precio" value="<?php echo htmlspecialchars($platilloEditar['decPrecio']); ?>" required>
+
+        <label>Imagen (Dejar vacío para no cambiar)</label>
+        <input type="file" name="imagen" accept="image/*">
+        
+        <input type="hidden" name="imagen_actual" value="<?php echo htmlspecialchars($platilloEditar['vchImagen']); ?>">
+
+        <?php if(!empty($platilloEditar['vchImagen'])): ?>
+            <div class="img-preview-box">
+                <p style="margin:0; font-size:12px; color:#666;">Imagen Actual:</p>
+                <img src="../<?php echo htmlspecialchars($platilloEditar['vchImagen']); ?>" alt="Actual">
+            </div>
+        <?php endif; ?>
+
+        <button type="submit">Guardar cambios</button>
+        <a class="btn-cancelar" href="menu.php">Cancelar</a>
+      </form>
+      <?php endif; ?>
+
+      <!-- ========== MENÚ DINÁMICO (TARJETAS) ========== -->
       <div class="menu-grid">
+        <?php foreach ($categorias as $nombreCat => $items): ?>
+          <section class="category">
+            <h3 class="category__title"><?php echo htmlspecialchars($nombreCat); ?></h3>
 
-        <!-- Col 1: Guisados -->
-        <section class="category">
-          <h3 class="category__title">Guisados</h3>
+            <?php foreach ($items as $p): ?>
+                <?php 
+                    // ============================================================
+                    // CORRECCIÓN DE RUTA DE IMAGEN + FALLBACK
+                    // ============================================================
+                    $imgDb = $p['vchImagen'];
+                    $rutaFisica = "../" . $imgDb;
+                    
+                    // Determinamos si mostrar la imagen o el placeholder
+                    // Usamos una imagen por defecto transparente para activar el 'onerror' si falla
+                    $mostrarImagen = false;
+                    if (!empty($imgDb) && file_exists($rutaFisica)) {
+                        $mostrarImagen = true;
+                        $imgSrc = $rutaFisica;
+                    }
+                ?>
+              <article class="tile">
+                <div class="tile-row">
+                  <div class="tile__img">
+                    <?php if ($mostrarImagen): ?>
+                        <!-- Si falla la carga (onerror), se oculta la imagen y se muestra el div de fondo -->
+                        <img src="<?php echo $imgSrc; ?>" alt="<?php echo htmlspecialchars($p['vchNombre']); ?>" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <!-- Fallback oculto por defecto -->
+                        <div class="no-image-placeholder" style="display:none;">
+                            <?php echo strtoupper(substr($p['vchNombre'], 0, 1)); ?>
+                        </div>
+                    <?php else: ?>
+                        <!-- Si no hay imagen en BD, mostramos inicial del nombre -->
+                        <div class="no-image-placeholder">
+                            <?php echo strtoupper(substr($p['vchNombre'], 0, 1)); ?>
+                        </div>
+                    <?php endif; ?>
+                  </div>
+                  
+                  <div class="tile__info">
+                    <strong><?php echo htmlspecialchars($p['vchNombre']); ?></strong>
+                    <span class="price">$<?php echo number_format($p['decPrecio'], 2); ?></span>
+                  </div>
+                  
+                  <div class="tile__actions">
+                    <a class="btn-crud btn-editar" href="menu.php?modo=editar&id=<?php echo $p['intIdPlatillo']; ?>">Editar</a>
+                    <form action="menu_acciones.php?accion=eliminar&id=<?php echo $p['intIdPlatillo']; ?>" method="post" onsubmit="return confirm('¿Eliminar este platillo?');">
+                      <button type="submit" class="btn-crud btn-eliminar">Eliminar</button>
+                    </form>
+                  </div>
+                </div>
+              </article>
+            <?php endforeach; ?>
 
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/2232/vegetables-italian-pizza-restaurant.jpg" alt="Guisado de bistec">
-            </div>
-            <div class="tile__info">
-              <strong>Guisado de bistec</strong>
-              <span class="price">$60</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/571017/pexels-photo-571017.jpeg" alt="Guisado de salchicha">
-            </div>
-            <div class="tile__info">
-              <strong>Guisado de salchicha</strong>
-              <span class="price">$50</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg" alt="Guisado de huevo">
-            </div>
-            <div class="tile__info">
-              <strong>Guisado de huevo</strong>
-              <span class="price">$60</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/53821/burrito-mexican-mexican-food-restaurant-53821.jpeg" alt="Guisado de empanizado">
-            </div>
-            <div class="tile__info">
-              <strong>Guisado de empanizado</strong>
-              <span class="price">$50</span>
-            </div>
-          </article>
-        </section>
-
-        <!-- Col 2: Tacos -->
-        <section class="category">
-          <h3 class="category__title">Tacos</h3>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Taco de bistec">
-            </div>
-            <div class="tile__info">
-              <strong>Taco de bistec</strong>
-              <span class="price">$12</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/533325/pexels-photo-533325.jpeg" alt="Tacos de salchicha">
-            </div>
-            <div class="tile__info">
-              <strong>Tacos de salchicha</strong>
-              <span class="price">$10</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Taco de chicharrón">
-            </div>
-            <div class="tile__info">
-              <strong>Taco de chicharrón</strong>
-              <span class="price">$10</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/1420172/pexels-photo-1420172.jpeg" alt="Taco de huevo">
-            </div>
-            <div class="tile__info">
-              <strong>Taco de huevo</strong>
-              <span class="price">$10</span>
-            </div>
-          </article>
-        </section>
-
-        <!-- Col 3: Tortas -->
-        <section class="category">
-          <h3 class="category__title">Tortas</h3>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Torta al pastor">
-            </div>
-            <div class="tile__info">
-              <strong>Torta al pastor</strong>
-              <span class="price">$40</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Torta de salchicha">
-            </div>
-            <div class="tile__info">
-              <strong>Torta de salchicha</strong>
-              <span class="price">$40</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Torta de milanesa">
-            </div>
-            <div class="tile__info">
-              <strong>Torta de milanesa</strong>
-              <span class="price">$40</span>
-            </div>
-          </article>
-
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Torta de cochinita con huevo">
-            </div>
-            <div class="tile__info">
-              <strong>Torta de cochinita con huevo</strong>
-              <span class="price">$40</span>
-            </div>
-          </article>
-        </section>
-
-        <!-- Col 4: Hamburguesa / Sandwich / Hot dogs -->
-        <section class="category narrow">
-          <h3 class="category__title">Hamburguesa</h3>
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg" alt="Hamburguesa de carne de res">
-            </div>
-            <div class="tile__info">
-              <strong>Hamburguesa de carne de res</strong>
-              <span class="price">$45</span>
-            </div>
-          </article>
-
-          <h3 class="category__title mt">Sandwich</h3>
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/1600711/pexels-photo-1600711.jpeg" alt="Sandwich clásico">
-            </div>
-            <div class="tile__info">
-              <strong>Sandwich</strong>
-              <span class="price">$15</span>
-            </div>
-          </article>
-
-          <h3 class="category__title mt">Hot dogs</h3>
-          <article class="tile">
-            <div class="tile__img">
-              <img src="https://images.pexels.com/photos/2232/vegetables-italian-pizza-restaurant.jpg" alt="Hot dogs">
-            </div>
-            <div class="tile__info">
-              <strong>Hot dogs</strong>
-              <span class="price">$20</span>
-            </div>
-          </article>
-        </section>
-
+          </section>
+        <?php endforeach; ?>
       </div>
     </main>
   </div>
@@ -266,3 +202,4 @@ if (!isset($_SESSION['usuario'])) {
 </footer>
 </body>
 </html>
+<?php $conn->close(); ?>
