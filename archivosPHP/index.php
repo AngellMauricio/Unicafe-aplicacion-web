@@ -25,8 +25,8 @@ if (!isset($_SESSION['usuario'])) {
                 Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?> <span style="font-size:0.8em">▼</span>
             </span>
             <div class="dropdown-content">
-                <a href="archivosPHP/mi_cuenta.php">⚙️ Mi Cuenta</a>
-                <a href="archivosPHP/logout.php" class="logout-link">🚪 Cerrar Sesión</a>
+                <a href="mi_cuenta.php">⚙️ Mi Cuenta</a>
+                <a href="logout.php" class="logout-link">🚪 Cerrar Sesión</a>
             </div>
         </div>
         </div>
@@ -37,10 +37,10 @@ if (!isset($_SESSION['usuario'])) {
     <nav class="nav">
       <div class="nav__wrap">
         <a class="pill is-active" href="/index.php">HOME <span class="ico">🏠</span></a>
-        <a class="pill" href="archivosPHP/productos.php">PRODUCTOS <span class="ico">📦</span></a>
+        <a class="pill" href="productos.php">PRODUCTOS <span class="ico">📦</span></a>
         <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-        <a class="pill" href="archivosPHP/menu.php">MENÚ <span class="ico">🍽️</span></a>
-        <a class="pill" href="archivosPHP/pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
+        <a class="pill" href="menu.php">MENÚ <span class="ico">🍽️</span></a>
+        <a class="pill" href="pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
         <?php if(isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1){ ?>
         <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
         <?php } ?>
