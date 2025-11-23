@@ -15,6 +15,52 @@ if (!isset($_SESSION['usuario'])) {
   <link rel="stylesheet" href="/archivosCSS/menu_desplegable.css" />
   <link rel="stylesheet" href="/archivosCSS/footer.css" />
   <link rel="stylesheet" href="/archivosCSS/accesibilidad.css" />
+   <style>
+    /* Formularios CRUD */
+    .form-crud {
+      max-width: 600px; margin: 15px auto; padding: 15px;
+      background: #fdf5e6; border-radius: 10px; border: 1px solid #d0b38a;
+    }
+    .form-crud h2 { margin-top: 0; text-align: center; }
+    .form-crud label { display: block; margin-top: 6px; font-size: 14px; font-weight: bold; }
+    .form-crud input[type="text"], .form-crud input[type="number"] {
+      width: 100%; padding: 8px; margin-top: 2px; border-radius: 5px; border: 1px solid #ccc;
+    }
+    .form-crud button, .form-crud .btn-cancelar {
+      margin-top: 15px; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600;
+    }
+    .form-crud button { background: #28a745; color: #fff; }
+    .form-crud .btn-cancelar { background: #6c757d; color: #fff; text-decoration: none; display: inline-block; }
+
+    /* Estilos para previsualización de imagen */
+    .img-preview-box {
+        margin-top: 10px; text-align: center; background: #fff; padding: 10px; border: 1px dashed #ccc;
+    }
+    .img-preview-box img { max-height: 150px; object-fit: contain; }
+
+    /* Botones de cada platillo */
+    .tile-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .tile__actions{ display:flex; flex-direction:column; gap:4px; }
+    .btn-crud{ border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer; }
+    .btn-editar{ background:#699dd4; color:#fff; text-decoration:none; text-align:center; }
+    .btn-eliminar{ background:#dd5865; color:#fff; }
+    
+    /* Corrección imagen tarjeta */
+    .tile__img {
+        width: 80px; height: 80px; flex-shrink: 0;
+        background-color: #eee; border-radius: 5px; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .tile__img img { width: 100%; height: 100%; object-fit: cover; }
+    
+    /* Estilo para cuando no hay imagen (placeholder SVG) */
+    .no-image-placeholder {
+        width: 100%; height: 100%;
+        background-color: #efe3cf; color: #8a633b;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 20px; text-align: center;
+    }
+  </style>
 </head>
 <body>
   <div class="app">
@@ -39,10 +85,13 @@ if (!isset($_SESSION['usuario'])) {
     <nav class="nav">
       <div class="nav__wrap">
         <a class="pill" href="/archivosPHP/index.php"><span class="ico">🏠</span> HOME</a>
-        <a class="pill" href="/archivosPHP/productos.php"><span class="ico">📦</span> PRODUCTOS</a>
-        <a class="pill is-active" href="/archivosPHP/menu.php"><span class="ico">🍽️</span> MENÚ</a>
-        <a class="pill" href="/archivosPHP/pedidos.php"><span class="ico">🧾</span> PEDIDOS</a>
-        <a class="pill" href="/archivosPHP/usuarios.php"><span class="ico">👤</span>REGISTROS</a>
+        <a class="pill" href="productos.php"><span class="ico">📦</span> PRODUCTOS</a>
+        <a class="pill is-active" href="menu.php"><span class="ico">🍽️</span> MENÚ</a>
+        <a class="pill" href="pedidos.php"><span class="ico">🧾</span> PEDIDOS</a>
+        <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
+          <a class="pill" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+          <a class="pill" href="usuarios.php">REGISTROS <span class="ico">👤</span></a>
+        <?php } ?>
       </div>
     </nav>
 
