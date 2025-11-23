@@ -21,6 +21,7 @@ $resultado_productos = $conn->query($sql);
 
   <!-- Estilos Generales -->
   <link rel="stylesheet" href="/archivosCSS/home.css" />
+  <link rel="stylesheet" href="/archivosCSS/productos.css" />
   <link rel="stylesheet" href="/archivosCSS/menu_desplegable.css" />
   <link rel="stylesheet" href="/archivosCSS/footer.css" />
   <link rel="stylesheet" href="/archivosCSS/accesibilidad.css" />
@@ -59,7 +60,7 @@ $resultado_productos = $conn->query($sql);
         <a class="pill" href="menu.php"><span class="ico">🍽️</span> MENÚ</a>
         <a class="pill" href="pedidos.php"><span class="ico">🧾</span> PEDIDOS</a>
         <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
-          <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+          <a class="pill" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
           <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
         <?php } ?>
       </div>

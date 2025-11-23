@@ -76,6 +76,7 @@ $res_lista = $conn->query($sql_lista);
     <link rel="stylesheet" href="../archivosCSS/registro.css">
     <link rel="stylesheet" href="../archivosCSS/menu_desplegable.css" />
     <link rel="stylesheet" href="../archivosCSS/gestion_productos.css">
+    <link rel="stylesheet" href="../archivosCSS/footer.css" />
    
     </head>
 
