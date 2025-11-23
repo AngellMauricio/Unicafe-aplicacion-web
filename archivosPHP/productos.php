@@ -43,7 +43,7 @@ $resultado_productos = $conn->query($sql);
       <div class="nav__wrap">
         <a class="pill" href="../index.html"><span class="ico">🏠</span> HOME</a>
         <a class="pill is-active" href="/archivosPHP/productos.php"><span class="ico">📦</span> PRODUCTOS</a>
-        <a class="pill" href="../archivosHTML/menu.html"><span class="ico">🍽️</span> MENÚ</a>
+        <a class="pill" href="../archivosPHP/menu.php"><span class="ico">🍽️</span> MENÚ</a>
         <a class="pill" href="../archivosHTML/pedidos.html"><span class="ico">🧾</span> PEDIDOS</a>
       </div>
     </nav>
