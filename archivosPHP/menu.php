@@ -163,7 +163,7 @@ while ($row = $res->fetch_assoc()) {
         <input type="number" step="0.01" name="precio" placeholder="Ej. 40" required>
 
         <label>Imagen (URL)</label>
-        <input type="text" name="imagen" placeholder="https://...">
+        <input type="text" name="imagen" placeholder="http://...">
 
         <button type="submit">Agregar platillo</button>
       </form>
