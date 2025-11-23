@@ -24,6 +24,7 @@ $resultado_productos = $conn->query($sql);
   <link rel="stylesheet" href="/archivosCSS/menu_desplegable.css" />
   <link rel="stylesheet" href="/archivosCSS/footer.css" />
   <link rel="stylesheet" href="/archivosCSS/accesibilidad.css" />
+  <link rel="stylesheet" href="/archivosCSS/productos.css" />
   
   <!-- Estilos de la Ventana Emergente (Nuevo archivo) -->
   <link rel="stylesheet" href="../archivosCSS/ventanaEmergente.css" />
@@ -54,7 +55,7 @@ $resultado_productos = $conn->query($sql);
     <!-- NAV -->
     <nav class="nav">
       <div class="nav__wrap">
-        <a class="pill" href="../index.php"><span class="ico">🏠</span> HOME</a>
+        <a class="pill" href="../archivosPHP/index.php"><span class="ico">🏠</span> HOME</a>
         <a class="pill is-active" href="productos.php"><span class="ico">📦</span> PRODUCTOS</a>
         <a class="pill" href="menu.php"><span class="ico">🍽️</span> MENÚ</a>
         <a class="pill" href="pedidos.php"><span class="ico">🧾</span> PEDIDOS</a>
