@@ -4,7 +4,15 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.html");
     exit;
 }
+if ($_SESSION['rol_id'] != 1) {
+  // Si está logueado pero NO es admin, mándalo al inicio o muestra error
+  echo "<script>alert('Acceso denegado: Solo administradores.'); window.location.href='../index.php';</script>";
+  exit();
+}
 
+
+// TODOS LOS PHP ESTÁN EN LA MISMA CARPETA:
+require_once __DIR__ . '/conexion.php'; 
 // --- 1. OBTENER DATOS PARA LISTAS ---
 $sql_categorias = "SELECT intIdCategoria, vchCategoria FROM tblcategorias";
 $res_categorias = $conn->query($sql_categorias);
@@ -66,8 +74,10 @@ $res_lista = $conn->query($sql_lista);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gestión de Productos — Cafetería UTHH</title>
     <link rel="stylesheet" href="../archivosCSS/registro.css">
+    <link rel="stylesheet" href="../archivosCSS/menu_desplegable.css" />
     <link rel="stylesheet" href="../archivosCSS/gestion_productos.css">
-</head>
+   
+    </head>
 
 <body>
     <div class="app">
@@ -249,3 +259,7 @@ $res_lista = $conn->query($sql_lista);
 </body>
 
 </html>
+<?php
+if (isset($conn) && $conn instanceof mysqli) {
+  $conn->close();
+}
