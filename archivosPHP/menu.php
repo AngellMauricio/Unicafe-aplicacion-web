@@ -72,6 +72,9 @@ while ($row = $res->fetch_assoc()) {
     .btn-crud{ border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer; }
     .btn-editar{ background:#699dd4; color:#fff; text-decoration:none; text-align:center; }
     .btn-eliminar{ background:#dd5865; color:#fff; }
+    
+    /* Corrección imagen tarjeta */
+    .tile__img img { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
@@ -99,7 +102,6 @@ while ($row = $res->fetch_assoc()) {
 
       <!-- ========== FORMULARIO: AGREGAR ========== -->
       <?php if (!$platilloEditar): ?>
-      <!-- IMPORTANTE: enctype para subir archivos -->
       <form class="form-crud" action="menu_acciones.php?accion=agregar" method="post" enctype="multipart/form-data">
         <h2>Agregar nuevo platillo</h2>
 
@@ -136,12 +138,12 @@ while ($row = $res->fetch_assoc()) {
         <label>Imagen (Dejar vacío para no cambiar)</label>
         <input type="file" name="imagen" accept="image/*">
         
-        <!-- Input oculto para mantener la imagen anterior -->
         <input type="hidden" name="imagen_actual" value="<?php echo htmlspecialchars($platilloEditar['vchImagen']); ?>">
 
         <?php if(!empty($platilloEditar['vchImagen'])): ?>
             <div class="img-preview-box">
                 <p style="margin:0; font-size:12px; color:#666;">Imagen Actual:</p>
+                <!-- Aquí también agregamos el ../ -->
                 <img src="../<?php echo htmlspecialchars($platilloEditar['vchImagen']); ?>" alt="Actual">
             </div>
         <?php endif; ?>
@@ -159,12 +161,21 @@ while ($row = $res->fetch_assoc()) {
 
             <?php foreach ($items as $p): ?>
                 <?php 
-                    // Lógica para mostrar imagen o placeholder
-                    $imgRuta = $p['vchImagen'];
-                    // Verificamos si existe el archivo. Usamos "../" porque estamos en archivosPHP
-                    if (!empty($imgRuta) && file_exists("../" . $imgRuta)) {
-                        $imgSrc = "../" . $imgRuta;
+                    // ============================================================
+                    // CORRECCIÓN DE RUTA DE IMAGEN
+                    // ============================================================
+                    $imgDb = $p['vchImagen'];
+                    
+                    // 1. Construir la ruta física RELATIVA AL SERVIDOR para checar si existe
+                    //    menu.php está en archivosPHP/, así que salimos con ../
+                    $rutaFisica = "../" . $imgDb;
+
+                    // 2. Verificar
+                    if (!empty($imgDb) && file_exists($rutaFisica)) {
+                        // Si existe, usamos la ruta con ../ para que el HTML la encuentre
+                        $imgSrc = $rutaFisica;
                     } else {
+                        // Si no, placeholder
                         $imgSrc = "https://placehold.co/300x200/efe3cf/8a633b?text=" . urlencode($p['vchNombre']);
                     }
                 ?>
@@ -178,10 +189,7 @@ while ($row = $res->fetch_assoc()) {
                     <span class="price">$<?php echo number_format($p['decPrecio'], 2); ?></span>
                   </div>
                   <div class="tile__actions">
-                    <!-- EDITAR -->
                     <a class="btn-crud btn-editar" href="menu.php?modo=editar&id=<?php echo $p['intIdPlatillo']; ?>">Editar</a>
-
-                    <!-- ELIMINAR -->
                     <form action="menu_acciones.php?accion=eliminar&id=<?php echo $p['intIdPlatillo']; ?>" method="post" onsubmit="return confirm('¿Eliminar este platillo?');">
                       <button type="submit" class="btn-crud btn-eliminar">Eliminar</button>
                     </form>

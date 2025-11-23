@@ -10,27 +10,30 @@ $accion = $_GET['accion'];
 
 // Función para subir imagen
 function subirImagenMenu($archivo) {
-    // Subimos un nivel (..) y entramos a imagenes_menu
-    $directorio = "../imagenes_menu/";
+    // Carpeta física donde se guardará (necesitamos ../ para salir de archivosPHP)
+    $directorio_fisico = "../imagenes_menu/";
     
-    if (!file_exists($directorio)) {
-        mkdir($directorio, 0777, true);
+    // Crear carpeta si no existe
+    if (!file_exists($directorio_fisico)) {
+        mkdir($directorio_fisico, 0777, true);
     }
 
     $nombre_archivo = basename($archivo["name"]);
     $tipo_archivo = strtolower(pathinfo($nombre_archivo, PATHINFO_EXTENSION));
     
     // Validar imagen
-    if($check = getimagesize($archivo["tmp_name"]) === false) {
-        return null;
+    $check = getimagesize($archivo["tmp_name"]);
+    if($check === false) {
+        return null; // No es imagen
     }
 
     // Nombre único
     $nuevo_nombre = "platillo_" . uniqid() . "." . $tipo_archivo;
-    $ruta_destino = $directorio . $nuevo_nombre;
+    $ruta_destino_fisica = $directorio_fisico . $nuevo_nombre;
 
-    if (move_uploaded_file($archivo["tmp_name"], $ruta_destino)) {
-        // Guardamos la ruta relativa limpia para la BD
+    if (move_uploaded_file($archivo["tmp_name"], $ruta_destino_fisica)) {
+        // IMPORTANTE: Guardamos en la BD la ruta "limpia" para poder usarla desde cualquier lado
+        // Guardamos: imagenes_menu/platillo_123.jpg
         return "imagenes_menu/" . $nuevo_nombre;
     }
     return null;
@@ -38,14 +41,14 @@ function subirImagenMenu($archivo) {
 
 switch ($accion) {
 
-    // ====== AGREGAR NUEVO PLATILLO ======
+    // ====== AGREGAR ======
     case 'agregar':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoria = trim($_POST['categoria'] ?? '');
             $nombre    = trim($_POST['nombre'] ?? '');
             $precio    = (float)($_POST['precio'] ?? 0);
             
-            // Por defecto cadena vacía para cumplir con NOT NULL de tu tabla
+            // Por defecto vacío
             $ruta_imagen = ""; 
             
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
@@ -63,7 +66,6 @@ switch ($accion) {
                     VALUES (?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
-            // Importante: Pasamos $ruta_imagen que ahora es "" si no hay foto, no NULL
             $stmt->bind_param("ssds", $categoria, $nombre, $precio, $ruta_imagen);
             
             if (!$stmt->execute()) { die("Error: " . $stmt->error); }
@@ -79,11 +81,10 @@ switch ($accion) {
             $nombre    = trim($_POST['nombre'] ?? '');
             $precio    = (float)($_POST['precio'] ?? 0);
             
-            // Imagen actual (por si no suben una nueva)
-            // Aseguramos que si viene vacía sea "" y no null
+            // Recuperamos la imagen anterior (que ya debe ser imagenes_menu/foto.jpg)
             $ruta_imagen = $_POST['imagen_actual'] ?? "";
 
-            // Si suben nueva imagen
+            // Si suben nueva imagen, reemplazamos
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
                 $nueva = subirImagenMenu($_FILES['imagen']);
                 if($nueva) {
@@ -115,12 +116,15 @@ switch ($accion) {
         if (isset($_GET['id'])) {
             $id = (int)$_GET['id'];
             
-            // Opcional: Borrar archivo físico
+            // Borrar archivo físico
             $res = $conn->query("SELECT vchImagen FROM tblmenu WHERE intIdPlatillo=$id");
             if($row = $res->fetch_assoc()){
-                // Solo borramos si no está vacío y existe el archivo
-                if(!empty($row['vchImagen']) && file_exists("../".$row['vchImagen'])){
-                    unlink("../".$row['vchImagen']);
+                // La ruta en BD es imagenes_menu/foto.jpg
+                // Para borrarla desde aquí, necesitamos agregarle ../ al principio
+                $archivo_fisico = "../" . $row['vchImagen'];
+                
+                if(!empty($row['vchImagen']) && file_exists($archivo_fisico)){
+                    unlink($archivo_fisico);
                 }
             }
 
