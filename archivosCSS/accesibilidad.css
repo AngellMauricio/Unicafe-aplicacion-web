@@ -1,0 +1,90 @@
+/* Botón flotante para leer voz */
+.voice-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Esquina inferior derecha */
+    background-color: #2A9D8F; /* Tu color de acento (verde azulado) */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 10000; /* Encima de todo */
+    transition: transform 0.2s, background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.voice-btn:hover {
+    transform: scale(1.05);
+    background-color: #21867a;
+}
+
+.voice-btn.hablando {
+    background-color: #e76f51; /* Rojo/Naranja para indicar "Parar" */
+}
+/* --- PANEL DE ZOOM (LUPA) --- */
+.accessibility-panel {
+    position: fixed;
+    bottom: 80px; /* Un poco más arriba del botón de voz */
+    right: 20px;
+    display: flex;
+    flex-direction: column; /* Botones uno encima del otro (apilados) */
+    gap: 5px;
+    z-index: 10000;
+}
+
+.accessibility-panel button {
+    background-color: #fff;
+    color: #765433; /* Tu color café */
+    border: 2px solid #765433;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Botones redondos */
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accessibility-panel button:hover {
+    background-color: #765433;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* Ajuste para que no choque con el botón de voz si lo tienes */
+.voice-btn {
+    /* Aseguramos que el botón de voz siga abajo */
+    z-index: 10001; 
+}
+/* --- MODOS DE DALTONISMO / ACCESIBILIDAD --- */
+
+/* Modo 1: Escala de Grises (Ayuda a eliminar confusión de colores) */
+body.modo-grises {
+    filter: grayscale(100%);
+}
+
+/* Modo 2: Alto Contraste (Ayuda a baja visión) */
+body.modo-contraste {
+    filter: contrast(150%) brightness(110%);
+    background-color: #fff !important; /* Fuerza fondo blanco para lectura */
+}
+
+/* (Opcional) Invertir colores inteligente */
+/* Esto vuelve el fondo negro y letras claras, útil para fotofobia */
+body.modo-oscuro-acc {
+    filter: invert(100%) hue-rotate(180deg);
+}
+/* Si usas el modo invertido, esto evita que las fotos de comida se vean como radiografías */
+body.modo-oscuro-acc img {
+    filter: invert(100%) hue-rotate(180deg);
+}

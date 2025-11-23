@@ -1,36 +1,57 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
 
 .app {
-  min-height: 100vh;          
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;     /* Ordena los elementos de arriba a abajo */
+  flex-direction: column;
 }
 
 main.content {
-  flex: 1;                    /*Empuja el footer hacia abajo */
+  flex: 1;
 }
 
 footer {
-  background-color:#765433;
+  background-color: #765433;
   color: white;
   text-align: center;
   font-family: sans-serif;
-  font-size: 13px;
-  padding: 0.5px 0;
-  line-height: 0.5;
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  padding: 40px 20px;
+
+  margin-top: auto;
 }
-.btn-contacto {
-  background-color: #c59b42;
-  color: white;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
+
+.footer-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
-.btn-contacto:hover {
-  background-color: #4d3925;
+
+.footer-links a {
+  color: #efe3cf;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+  padding-bottom: 2px;
+}
+
+.footer-links a:hover {
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.separator {
+  color: #a88b7d;
+  font-weight: lighter;
 }
