@@ -4,6 +4,7 @@ if (!isset($_SESSION['usuario'])) {
   header("Location: login.html");
   exit;
 }
+require_once __DIR__ . '/conexion.php'; 
 // 2. Preparamos la consulta SQL
 $sql = "SELECT vchNombre, vchDescripcion, intStock, decPrecioVenta, vchImagen 
         FROM tblproductos";
@@ -202,3 +203,7 @@ $resultado_productos = $conn->query($sql);
 </body>
 
 </html>
+<?php
+if (isset($conn) && $conn instanceof mysqli) {
+  $conn->close();
+}
