@@ -30,30 +30,30 @@ $accion_form = "procesar_usuario.php?accion=agregar"; // Acción por defecto: ag
 
 // Si recibimos ?accion=editar...
 if (isset($_GET['accion']) && $_GET['accion'] === 'editar' && isset($_GET['id'])) {
-    $modo_edicion = true;
-    $id_usuario_editar = (int)$_GET['id'];
-    $accion_form = "procesar_usuario.php?accion=actualizar&id=" . $id_usuario_editar;
+  $modo_edicion = true;
+  $id_usuario_editar = (int)$_GET['id'];
+  $accion_form = "procesar_usuario.php?accion=actualizar&id=" . $id_usuario_editar;
 
-    $stmt_editar = $conn->prepare("
+  $stmt_editar = $conn->prepare("
         SELECT vchNombres, vchApaterno, vchAmaterno, vchTelefono, vchCorreo, vchDireccion, intIdRol
         FROM tblusuario
         WHERE intIdUsuario = ?
     ");
-    $stmt_editar->bind_param("i", $id_usuario_editar);
-    $stmt_editar->execute();
-    $resultado_editar = $stmt_editar->get_result();
+  $stmt_editar->bind_param("i", $id_usuario_editar);
+  $stmt_editar->execute();
+  $resultado_editar = $stmt_editar->get_result();
 
-    if ($resultado_editar && $resultado_editar->num_rows > 0) {
-        $u = $resultado_editar->fetch_assoc();
-        $nombre_val = htmlspecialchars($u['vchNombres'] ?? '');
-        $ap_val     = htmlspecialchars($u['vchApaterno'] ?? '');
-        $am_val     = htmlspecialchars($u['vchAmaterno'] ?? '');
-        $tel_val    = htmlspecialchars($u['vchTelefono'] ?? '');
-        $email_val  = htmlspecialchars($u['vchCorreo']   ?? '');
-        $dir_val    = htmlspecialchars($u['vchDireccion']?? '');
-        $rol_val    = (int)($u['intIdRol'] ?? 0);
-    }
-    $stmt_editar->close();
+  if ($resultado_editar && $resultado_editar->num_rows > 0) {
+    $u = $resultado_editar->fetch_assoc();
+    $nombre_val = htmlspecialchars($u['vchNombres'] ?? '');
+    $ap_val     = htmlspecialchars($u['vchApaterno'] ?? '');
+    $am_val     = htmlspecialchars($u['vchAmaterno'] ?? '');
+    $tel_val    = htmlspecialchars($u['vchTelefono'] ?? '');
+    $email_val  = htmlspecialchars($u['vchCorreo']   ?? '');
+    $dir_val    = htmlspecialchars($u['vchDireccion'] ?? '');
+    $rol_val    = (int)($u['intIdRol'] ?? 0);
+  }
+  $stmt_editar->close();
 }
 // --- FIN LÓGICA ACTUALIZAR ---
 
@@ -69,6 +69,7 @@ $resultado_lista = $conn->query($sql_select);
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -79,17 +80,26 @@ $resultado_lista = $conn->query($sql_select);
   <link rel="stylesheet" href="../archivosCSS/usuarios.css">
   <link rel="stylesheet" href="../archivosCSS/footer.css" />
 </head>
+
 <body>
   <div class="app">
     <header class="topbar">
       <div class="topbar__left">
-        <span class="avatar">👤</span>
-        <!-- login.html está en /unicafe/archivosHTML/ → desde archivosPHP/ sube un nivel -->
-        <a class="login-pill" href="../login.html">Iniciar Sesión</a>
+        <span class="avatar" aria-hidden="true">👤</span>
+
+        <div class="user-dropdown">
+          <span class="user-trigger">
+            Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?> <span style="font-size:0.8em">▼</span>
+          </span>
+          <div class="dropdown-content">
+            <a href="mi_cuenta.php">⚙️ Mi Cuenta</a>
+            <a href="logout.php" class="logout-link">🚪 Cerrar Sesión</a>
+          </div>
+        </div>
       </div>
       <h1 class="title">CAFETERIA UTHH</h1>
+      <div class="topbar__right"></div>
     </header>
-
     <nav class="nav">
       <div class="nav__wrap">
         <!-- Desde /archivosPHP/ para ir a /archivosHTML/ usa ../ -->
@@ -99,9 +109,9 @@ $resultado_lista = $conn->query($sql_select);
         <a class="pill" href="../archivosHTML/pedidos.html"><span class="ico">🧾</span> PEDIDOS</a>
         <!-- Esta página -->
         <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
-                    <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-                    <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
-                <?php } ?>
+          <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+          <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
+        <?php } ?>
       </div>
     </nav>
 
@@ -198,14 +208,9 @@ $resultado_lista = $conn->query($sql_select);
     </main>
   </div>
 
-  <footer class="footer">
-    <p>Universidad Tecnológica de la Huasteca Hidalguense</p>
-    <p>&copy; 2025 Cafetería UTHH. Todos los derechos reservados.</p>
-    <form action="../archivosHTML/contacto.html" method="get">
-      <button type="submit" class="btn-contacto">Contáctanos</button>
-    </form>
-  </footer>
+
 </body>
+
 </html>
 <?php
 if (isset($conn) && $conn instanceof mysqli) {
