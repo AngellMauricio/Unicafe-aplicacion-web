@@ -71,6 +71,7 @@ $stmt_leer->close();
   <title>Mi Cuenta — Cafetería UTHH</title>
 
   <link rel="stylesheet" href="../archivosCSS/registro.css">
+  <link rel="stylesheet" href="../archivosCSS/accesibilidad.css" />
   <link rel="stylesheet" href="../archivosCSS/footer.css" />
   
   <style>
@@ -108,10 +109,14 @@ $stmt_leer->close();
 
     <nav class="nav">
       <div class="nav__wrap">
-        <a class="pill" href="../index.php"><span class="ico">🏠</span> HOME</a>
-        <a class="pill" href="../archivosHTML/productos.html"><span class="ico">📦</span> PRODUCTOS</a>
-        <a class="pill" href="../archivosHTML/menu.html"><span class="ico">🍽️</span> MENÚ</a>
+        <a class="pill" href="../archivosPHP/index.php"><span class="ico">🏠</span> HOME</a>
+        <a class="pill" href="../archivosPHP/productos.php"><span class="ico">📦</span> PRODUCTOS</a>
+        <a class="pill" href="../archivosPHP/menu.php"><span class="ico">🍽️</span> MENÚ</a>
         <a class="pill is-active" href="mi_cuenta.php"><span class="ico">⚙️</span> MI CUENTA</a>
+        <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
+                    <a class="pill" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+                    <a class="pill" href="usuarios.php">REGISTROS <span class="ico">👤</span></a>
+                <?php } ?>
       </div>
     </nav>
 
@@ -183,7 +188,37 @@ $stmt_leer->close();
   <footer class="footer">
     <p>Universidad Tecnológica de la Huasteca Hidalguense</p>
     <p>&copy; 2025 Cafetería UTHH. Todos los derechos reservados.</p>
+
+    <div class="footer-links">
+      <a href="/unicafe/archivosPHP/aviso_privacidad.php">Aviso de Privacidad</a>
+      <span class="separator">|</span>
+      <a href="/archivosPHP/terminos.php">Terminos y condiciones</a>
+      <span class="separator">|</span>
+      <a href="/unicafe/archivosHTML/somosUnicafe.html">Sobre nosotros</a>
+    </div>
   </footer>
+  <button
+    id="btn-voz"
+    class="voice-btn"
+    aria-label="Escuchar el contenido de la página">
+    🔊 Escuchar Contenido
+  </button>
+  <script src="/archivosJS/lector_voz.js"></script>
+
+  <script src="/archivosJS/accesibilidad.js"></script>
+
+  <div class="accessibility-panel">
+    <button id="btn-zoom-in" aria-label="Aumentar tamaño">A+</button>
+    <button id="btn-zoom-reset" aria-label="Restablecer tamaño">↺</button>
+    <button id="btn-zoom-out" aria-label="Disminuir tamaño">A-</button>
+
+    <button
+      id="btn-contrast"
+      aria-label="Cambiar modo de color"
+      style="margin-top: 5px; border-color: #2a9d8f; color: #2a9d8f">
+      🌗
+    </button>
+  </div>
 </body>
 </html>
 <?php

@@ -98,7 +98,10 @@ $resultado_lista = $conn->query($sql_select);
         <a class="pill" href="../archivosHTML/menu.html"><span class="ico">🍽️</span> MENÚ</a>
         <a class="pill" href="../archivosHTML/pedidos.html"><span class="ico">🧾</span> PEDIDOS</a>
         <!-- Esta página -->
-        <a class="pill is-active" href="usuarios.php"><span class="ico">👤</span> REGISTROS</a>
+        <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
+                    <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+                    <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
+                <?php } ?>
       </div>
     </nav>
 

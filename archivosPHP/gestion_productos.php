@@ -1,6 +1,18 @@
 <?php
-include 'conexion.php';
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.html");
+    exit;
+}
+if ($_SESSION['rol_id'] != 1) {
+  // Si está logueado pero NO es admin, mándalo al inicio o muestra error
+  echo "<script>alert('Acceso denegado: Solo administradores.'); window.location.href='../index.php';</script>";
+  exit();
+}
 
+
+// TODOS LOS PHP ESTÁN EN LA MISMA CARPETA:
+require_once __DIR__ . '/conexion.php'; 
 // --- 1. OBTENER DATOS PARA LISTAS ---
 $sql_categorias = "SELECT intIdCategoria, vchCategoria FROM tblcategorias";
 $res_categorias = $conn->query($sql_categorias);
@@ -62,30 +74,43 @@ $res_lista = $conn->query($sql_lista);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gestión de Productos — Cafetería UTHH</title>
     <link rel="stylesheet" href="../archivosCSS/registro.css">
+    <link rel="stylesheet" href="../archivosCSS/menu_desplegable.css" />
     <link rel="stylesheet" href="../archivosCSS/gestion_productos.css">
-</head>
+    <link rel="stylesheet" href="../archivosCSS/footer.css" />
+   
+    </head>
 
 <body>
     <div class="app">
         <header class="topbar">
             <div class="topbar__left">
-                <span class="avatar">📦</span>
-                <a class="login-pill" href="../archivosHTML/login.html">Cerrar Sesión</a>
+                <span class="avatar" aria-hidden="true">👤</span>
+
+                <div class="user-dropdown">
+                    <span class="user-trigger">
+                        Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?> <span style="font-size:0.8em">▼</span>
+                    </span>
+                    <div class="dropdown-content">
+                        <a href="mi_cuenta.php">⚙️ Mi Cuenta</a>
+                        <a href="logout.php" class="logout-link">🚪 Cerrar Sesión</a>
+                    </div>
+                </div>
             </div>
             <h1 class="title">CAFETERIA UTHH</h1>
+            <div class="topbar__right"></div>
         </header>
 
         <nav class="nav">
             <div class="nav__wrap">
-            <a class="pill is-active" href="/index.php">HOME <span class="ico">🏠</span></a>
-            <a class="pill" href="archivosPHP/productos.php">PRODUCTOS <span class="ico">📦</span></a>
-            <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-            <a class="pill" href="archivosPHP/menu.php">MENÚ <span class="ico">🍽️</span></a>
-            <a class="pill" href="archivosPHP/pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
-            <?php if(isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1){ ?>
-            <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
-            <?php } ?>
-        </div>
+                <a class="pill is-active" href="/archivosPHP/index.php">HOME <span class="ico">🏠</span></a>
+                <a class="pill" href="productos.php">PRODUCTOS <span class="ico">📦</span></a>
+                <a class="pill" href="menu.php">MENÚ <span class="ico">🍽️</span></a>
+                <a class="pill" href="pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
+                <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
+                    <a class="pill is-active" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+                    <a class="pill" href="usuarios.php">REGISTROS <span class="ico">👤</span></a>
+                <?php } ?>
+            </div>
         </nav>
 
         <main class="content">
@@ -235,4 +260,7 @@ $res_lista = $conn->query($sql_lista);
 </body>
 
 </html>
-<?php $conn->close(); ?>
+<?php
+if (isset($conn) && $conn instanceof mysqli) {
+  $conn->close();
+}

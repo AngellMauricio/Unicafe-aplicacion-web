@@ -1,137 +1,200 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cafetería UTHH</title>
-  <link rel="stylesheet" href="../archivosCSS/home.css" />
-  <link rel="stylesheet" href="../archivosCSS/footer.css" />
-</head>
-<body>
-  <div class="app">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cafetería UTHH</title>
+    <link rel="stylesheet" href="/archivosCSS/home.css" />
+    <link rel="stylesheet" href="/archivosCSS/menu_desplegable.css" />
+    <link rel="stylesheet" href="/archivosCSS/footer.css" />
+    <link rel="stylesheet" href="/archivosCSS/accesibilidad.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <span class="avatar" aria-hidden="true">👤</span>
+          <a class="login-pill" href="archivosHTML/login.html"
+            >Iniciar Sesión</a
+          >
+        </div>
+        <h1 class="title">CAFETERIA UTHH</h1>
+        <div class="topbar__right"></div>
+      </header>
 
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="topbar__left">
-      <span class="avatar" aria-hidden="true">👤</span>
-      <a class="login-pill" href="archivosHTML/login.html">Iniciar Sesión</a>
-      </div>
-      <h1 class="title">CAFETERIA UTHH</h1>
-      <div class="topbar__right"></div>
-    </header>
+      <!-- NAV -->
+      <nav class="nav">
+        <div class="nav__wrap">
+          <a class="pill is-active" href="/index.html"
+            >HOME <span class="ico">🏠</span></a
+          >
+          <a class="pill" href="archivosPHP/productos.php"
+            >PRODUCTOS <span class="ico">📦</span></a
+          >
+          <a class="pill" href="archivosPHP/menu.php"
+            >MENÚ <span class="ico">🍽️</span></a
+          >
+          <a class="pill" href="archivosHTML/pedidos.html"
+            >PEDIDOS <span class="ico">🧾</span></a
+          >
+        </div>
+      </nav>
 
-    <!-- NAV -->
-    <nav class="nav">
-      <div class="nav__wrap">
-        <a class="pill is-active" href="/index.html">HOME <span class="ico">🏠</span></a>
-        <a class="pill" href="archivosPHP/productos.php">PRODUCTOS <span class="ico">📦</span></a>
-        <a class="pill" href="archivosPHP/menu.php">MENÚ <span class="ico">🍽️</span></a>
-        <a class="pill" href="archivosHTML/pedidos.html">PEDIDOS <span class="ico">🧾</span></a>
-      </div>
-    </nav>
+      <!-- CONTENIDO -->
+      <main class="content">
+        <div class="container">
+          <!-- Menú (izquierda) -->
+          <section>
+            <h2 class="section-title">Menú</h2>
+            <div class="menu-card">
+              <div class="menu-grid">
+                <article class="mini">
+                  <div class="mini__img">
+                    <img
+                      src="https://images.pexels.com/photos/374885/pexels-photo-374885.jpeg"
+                      alt="Café americano"
+                    />
+                  </div>
+                  <ul class="mini__lines">
+                    <li>Americano 230 ml</li>
+                    <li>Grano Veracruz</li>
+                    <li>$25.00 MXN</li>
+                  </ul>
+                </article>
 
-    <!-- CONTENIDO -->
-    <main class="content">
-      <div class="container">
-        <!-- Menú (izquierda) -->
-        <section>
-          <h2 class="section-title">Menú</h2>
-          <div class="menu-card">
-            <div class="menu-grid">
-              <article class="mini">
-                <div class="mini__img">
-                  <img src="https://images.pexels.com/photos/374885/pexels-photo-374885.jpeg" alt="Café americano">
+                <article class="mini">
+                  <div class="mini__img">
+                    <img
+                      src="https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg"
+                      alt="Capuchino"
+                    />
+                  </div>
+                  <ul class="mini__lines">
+                    <li>Capuchino 260 ml</li>
+                    <li>Espuma cremosa</li>
+                    <li>$32.00 MXN</li>
+                  </ul>
+                </article>
+
+                <article class="mini">
+                  <div class="mini__img">
+                    <img
+                      src="https://images.pexels.com/photos/239622/pexels-photo-239622.jpeg"
+                      alt="Latte"
+                    />
+                  </div>
+                  <ul class="mini__lines">
+                    <li>Latte 300 ml</li>
+                    <li>Leche entera</li>
+                    <li>$35.00 MXN</li>
+                  </ul>
+                </article>
+
+                <article class="mini">
+                  <div class="mini__img">
+                    <img
+                      src="https://images.pexels.com/photos/1235717/pexels-photo-1235717.jpeg"
+                      alt="Espresso doble"
+                    />
+                  </div>
+                  <ul class="mini__lines">
+                    <li>Espresso doble</li>
+                    <li>Intenso</li>
+                    <li>$30.00 MXN</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <!-- Especiales (derecha) -->
+          <section>
+            <h2 class="section-title">Especiales</h2>
+            <div class="specials-grid">
+              <article class="special">
+                <div class="special__img">
+                  <img
+                    src="https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg"
+                    alt="Frappé mocha"
+                  />
                 </div>
-                <ul class="mini__lines">
-                  <li>Americano 230 ml</li>
-                  <li>Grano Veracruz</li>
-                  <li>$25.00 MXN</li>
+                <ul class="special__lines">
+                  <li>Frappé Mocha 16 oz</li>
+                  <li>Jarabe de chocolate</li>
+                  <li>$48.00 MXN</li>
                 </ul>
               </article>
 
-              <article class="mini">
-                <div class="mini__img">
-                  <img src="https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg" alt="Capuchino">
+              <article class="special">
+                <div class="special__img">
+                  <img
+                    src="https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg"
+                    alt="Cheesecake frutos rojos"
+                  />
                 </div>
-                <ul class="mini__lines">
-                  <li>Capuchino 260 ml</li>
-                  <li>Espuma cremosa</li>
-                  <li>$32.00 MXN</li>
+                <ul class="special__lines">
+                  <li>Cheesecake Frutos Rojos</li>
+                  <li>Rebanada individual</li>
+                  <li>$42.00 MXN</li>
                 </ul>
               </article>
 
-              <article class="mini">
-                <div class="mini__img">
-                  <img src="https://images.pexels.com/photos/239622/pexels-photo-239622.jpeg" alt="Latte">
+              <article class="special">
+                <div class="special__img">
+                  <img
+                    src="https://images.pexels.com/photos/3026809/pexels-photo-3026809.jpeg"
+                    alt="Croissant sandwich"
+                  />
                 </div>
-                <ul class="mini__lines">
-                  <li>Latte 300 ml</li>
-                  <li>Leche entera</li>
-                  <li>$35.00 MXN</li>
-                </ul>
-              </article>
-
-              <article class="mini">
-                <div class="mini__img">
-                  <img src="https://images.pexels.com/photos/1235717/pexels-photo-1235717.jpeg" alt="Espresso doble">
-                </div>
-                <ul class="mini__lines">
-                  <li>Espresso doble</li>
-                  <li>Intenso</li>
-                  <li>$30.00 MXN</li>
+                <ul class="special__lines">
+                  <li>Croissant Sándwich</li>
+                  <li>Jamón y queso</li>
+                  <li>$45.00 MXN</li>
                 </ul>
               </article>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
+      </main>
+    </div>
+    <footer class="footer">
+      <p>Universidad Tecnológica de la Huasteca Hidalguense</p>
+      <p>&copy; 2025 Cafetería UTHH. Todos los derechos reservados.</p>
 
-        <!-- Especiales (derecha) -->
-        <section>
-          <h2 class="section-title">Especiales</h2>
-          <div class="specials-grid">
-            <article class="special">
-              <div class="special__img">
-                <img src="https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg" alt="Frappé mocha">
-              </div>
-              <ul class="special__lines">
-                <li>Frappé Mocha 16 oz</li>
-                <li>Jarabe de chocolate</li>
-                <li>$48.00 MXN</li>
-              </ul>
-            </article>
-
-            <article class="special">
-              <div class="special__img">
-                <img src="https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg" alt="Cheesecake frutos rojos">
-              </div>
-              <ul class="special__lines">
-                <li>Cheesecake Frutos Rojos</li>
-                <li>Rebanada individual</li>
-                <li>$42.00 MXN</li>
-              </ul>
-            </article>
-
-            <article class="special">
-              <div class="special__img">
-                <img src="https://images.pexels.com/photos/3026809/pexels-photo-3026809.jpeg" alt="Croissant sandwich">
-              </div>
-              <ul class="special__lines">
-                <li>Croissant Sándwich</li>
-                <li>Jamón y queso</li>
-                <li>$45.00 MXN</li>
-              </ul>
-            </article>
-          </div>
-        </section>
+      <div class="footer-links">
+        <a href="/unicafe/archivosPHP/aviso_privacidad.php"
+          >Aviso de Privacidad</a
+        >
+        <span class="separator">|</span>
+        <a href="/archivosPHP/terminos.php">Terminos y condiciones</a>
+        <span class="separator">|</span>
+        <a href="/unicafe/archivosHTML/somosUnicafe.html">Sobre nosotros</a>
       </div>
-    </main>
-  </div>
-  <footer class="footer">
-  <p>Universidad Tecnológica de la Huasteca Hidalguense</p>
-  <p>&copy; 2025 Cafetería UTHH. Todos los derechos reservados.</p>
-  <form action="#contacto.html" method="get">
-    <button type="submit" class="btn-contacto">Contáctanos</button>
-  </form>
-</footer>
-</body>
+    </footer>
+    <button
+      id="btn-voz"
+      class="voice-btn"
+      aria-label="Escuchar el contenido de la página"
+    >
+      🔊 Escuchar Contenido
+    </button>
+    <script src="archivosJS/lector_voz.js"></script>
+
+    <script src="/archivosJS/accesibilidad.js"></script>
+
+    <div class="accessibility-panel">
+      <button id="btn-zoom-in" aria-label="Aumentar tamaño">A+</button>
+      <button id="btn-zoom-reset" aria-label="Restablecer tamaño">↺</button>
+      <button id="btn-zoom-out" aria-label="Disminuir tamaño">A-</button>
+
+      <button
+        id="btn-contrast"
+        aria-label="Cambiar modo de color"
+        style="margin-top: 5px; border-color: #2a9d8f; color: #2a9d8f"
+      >
+        🌗
+      </button>
+    </div>
+  </body>
 </html>

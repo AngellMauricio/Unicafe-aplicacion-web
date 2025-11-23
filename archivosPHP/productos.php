@@ -1,7 +1,10 @@
 <?php
-// 1. Incluimos la conexión a la base de datos
-include '../archivosPHP/conexion.php';
-
+session_start();
+if (!isset($_SESSION['usuario'])) {
+  header("Location: login.html");
+  exit;
+}
+require_once __DIR__ . '/conexion.php'; 
 // 2. Preparamos la consulta SQL
 $sql = "SELECT vchNombre, vchDescripcion, intStock, decPrecioVenta, vchImagen 
         FROM tblproductos";
@@ -16,10 +19,13 @@ $resultado_productos = $conn->query($sql);
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Productos – Cafetería UTHH</title>
-  
+
   <!-- Estilos Generales -->
-  <link rel="stylesheet" href="../archivosCSS/productos.css" />
-  <link rel="stylesheet" href="../archivosCSS/footer.css" />
+  <link rel="stylesheet" href="/archivosCSS/home.css" />
+  <link rel="stylesheet" href="/archivosCSS/productos.css" />
+  <link rel="stylesheet" href="/archivosCSS/menu_desplegable.css" />
+  <link rel="stylesheet" href="/archivosCSS/footer.css" />
+  <link rel="stylesheet" href="/archivosCSS/accesibilidad.css" />
   
   <!-- Estilos de la Ventana Emergente (Nuevo archivo) -->
   <link rel="stylesheet" href="../archivosCSS/ventanaEmergente.css" />
@@ -32,7 +38,16 @@ $resultado_productos = $conn->query($sql);
     <header class="topbar">
       <div class="topbar__left">
         <span class="avatar" aria-hidden="true">👤</span>
-        <a class="login-pill" href="/archivosHTML/login.html">Iniciar Sesión</a>
+
+        <div class="user-dropdown">
+          <span class="user-trigger">
+            Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?> <span style="font-size:0.8em">▼</span>
+          </span>
+          <div class="dropdown-content">
+            <a href="mi_cuenta.php">⚙️ Mi Cuenta</a>
+            <a href="logout.php" class="logout-link">🚪 Cerrar Sesión</a>
+          </div>
+        </div>
       </div>
       <h1 class="title">CAFETERIA UTHH</h1>
       <div class="topbar__right"></div>
@@ -41,10 +56,14 @@ $resultado_productos = $conn->query($sql);
     <!-- NAV -->
     <nav class="nav">
       <div class="nav__wrap">
-        <a class="pill" href="../index.html"><span class="ico">🏠</span> HOME</a>
-        <a class="pill is-active" href="/archivosPHP/productos.php"><span class="ico">📦</span> PRODUCTOS</a>
-        <a class="pill" href="../archivosHTML/menu.html"><span class="ico">🍽️</span> MENÚ</a>
-        <a class="pill" href="../archivosHTML/pedidos.html"><span class="ico">🧾</span> PEDIDOS</a>
+        <a class="pill" href="../archivosPHP/index.php"><span class="ico">🏠</span> HOME</a>
+        <a class="pill is-active" href="productos.php"><span class="ico">📦</span> PRODUCTOS</a>
+        <a class="pill" href="menu.php"><span class="ico">🍽️</span> MENÚ</a>
+        <a class="pill" href="pedidos.php"><span class="ico">🧾</span> PEDIDOS</a>
+        <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
+          <a class="pill" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
+          <a class="pill" href="archivosPHP/usuarios.php">REGISTROS <span class="ico">👤</span></a>
+        <?php } ?>
       </div>
     </nav>
 
@@ -65,11 +84,11 @@ $resultado_productos = $conn->query($sql);
             $stock = $fila['intStock'];
 
             // Lógica de imagen
-            $imgDb = $fila['vchImagen']; 
+            $imgDb = $fila['vchImagen'];
             if (!empty($imgDb) && file_exists("../" . $imgDb)) {
-                $imgUrl = "../" . $imgDb; 
+              $imgUrl = "../" . $imgDb;
             } else {
-                $imgUrl = "https://placehold.co/600x400/d9cfa8/765433?text=" . urlencode($fila['vchNombre']);
+              $imgUrl = "https://placehold.co/600x400/d9cfa8/765433?text=" . urlencode($fila['vchNombre']);
             }
         ?>
 
@@ -100,10 +119,37 @@ $resultado_productos = $conn->query($sql);
   <footer class="footer">
     <p>Universidad Tecnológica de la Huasteca Hidalguense</p>
     <p>&copy; 2025 Cafetería UTHH. Todos los derechos reservados.</p>
-    <form action="#contacto.html" method="get">
-      <button type="submit" class="btn-contacto">Contáctanos</button>
-    </form>
+
+    <div class="footer-links">
+      <a href="/unicafe/archivosPHP/aviso_privacidad.php">Aviso de Privacidad</a>
+      <span class="separator">|</span>
+      <a href="/archivosPHP/terminos.php">Terminos y condiciones</a>
+      <span class="separator">|</span>
+      <a href="/unicafe/archivosHTML/somosUnicafe.html">Sobre nosotros</a>
+    </div>
   </footer>
+  <button
+    id="btn-voz"
+    class="voice-btn"
+    aria-label="Escuchar el contenido de la página">
+    🔊 Escuchar Contenido
+  </button>
+  <script src="/archivosJS/lector_voz.js"></script>
+
+  <script src="/archivosJS/accesibilidad.js"></script>
+
+  <div class="accessibility-panel">
+    <button id="btn-zoom-in" aria-label="Aumentar tamaño">A+</button>
+    <button id="btn-zoom-reset" aria-label="Restablecer tamaño">↺</button>
+    <button id="btn-zoom-out" aria-label="Disminuir tamaño">A-</button>
+
+    <button
+      id="btn-contrast"
+      aria-label="Cambiar modo de color"
+      style="margin-top: 5px; border-color: #2a9d8f; color: #2a9d8f">
+      🌗
+    </button>
+  </div>
 
   <!-- ESTRUCTURA DE LA VENTANA MODAL (Oculta por defecto) -->
   <div id="productModal" class="modal">
@@ -155,8 +201,9 @@ $resultado_productos = $conn->query($sql);
   </script>
 
 </body>
-</html>
 
+</html>
 <?php
-$conn->close();
-?>
+if (isset($conn) && $conn instanceof mysqli) {
+  $conn->close();
+}
