@@ -40,8 +40,7 @@ $texto_actual = $fila['contenido'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Editar Aviso — Cafetería UTHH</title>
 
-    <link rel="stylesheet" href="../archivosCSS/home.css?v=3.5" />
-    <link rel="stylesheet" href="../archivosCSS/menu_desplegable.css" />
+    <link rel="stylesheet" href="../archivosCSS/layout.css?v=999.1" />
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
@@ -121,39 +120,9 @@ $texto_actual = $fila['contenido'] ?? '';
 <body>
 
     <div class="app">
-        <header class="topbar">
-            <div class="topbar__left">
-                <span class="avatar" aria-hidden="true">👤</span>
-                <div class="user-dropdown">
-                    <span class="user-trigger">
-                        Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?> <span style="font-size:0.8em">▼</span>
-                    </span>
-                    <div class="dropdown-content">
-                        <a href="mi_cuenta.php">⚙️ Mi Cuenta</a>
-                        <a href="logout.php" class="logout-link">🚪 Cerrar Sesión</a>
-                    </div>
-                </div>
-            </div>
-            <h1 class="title">CAFETERIA UTHH</h1>
-            <div class="topbar__right"></div>
-        </header>
-
-        <nav class="nav">
-            <div class="nav__wrap">
-                <a class="pill" href="../archivosPHP/index.php">HOME <span class="ico">🏠</span></a>
-                <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 3) { ?>
-                    <a class="pill" href="productos.php">PRODUCTOS <span class="ico">📦</span></a>
-                    <a class="pill" href="menu.php">MENÚ <span class="ico">🍽️</span></a>
-                    <a class="pill" href="pedidos.php">PEDIDOS <span class="ico">🧾</span></a>
-                <?php } ?>
-                <?php if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) { ?>
-                    <a class="pill" href="gestion_productos.php">⚙️ GESTIÓN PROD.</a>
-                    <a class="pill" href="gestion_terminos.php">⚙️ GESTIÓN TÉRMINOS</a>
-                    <a class="pill is-active" href="editar_aviso.php">⚙️ GESTIÓN AVISO DE PRIVACIDAD</a>
-                    <a class="pill" href="usuarios.php">REGISTROS <span class="ico">👤</span></a>
-                <?php } ?>
-            </div>
-        </nav>
+        
+        <?php include 'header.php'; ?>
+        <?php include 'barra_navegacion.php'; ?>
 
         <main class="content">
             <div class="editor-wrapper">

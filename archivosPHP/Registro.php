@@ -1,7 +1,4 @@
 <?php
-// registro.php
-// Solo necesitamos la conexión por si acaso, aunque en este formulario limpio 
-// realmente solo se necesita para enviar los datos a procesar_usuario.php
 require_once __DIR__ . '/conexion.php';
 ?>
 <!DOCTYPE html>
@@ -12,28 +9,18 @@ require_once __DIR__ . '/conexion.php';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Crear Cuenta — Cafetería UTHH</title>
 
-  <link rel="stylesheet" href="../archivosCSS/registro.css">
-  <link rel="stylesheet" href="../archivosCSS/footer.css" />
+  <link rel="stylesheet" href="../archivosCSS/registro.css?v=999.1">
+  <link rel="stylesheet" href="../archivosCSS/layout.css?v=999.1" />
 </head>
 
 <body>
   <div class="app">
-    <header class="topbar">
-      <div class="topbar__left">
-        <span class="avatar">👤</span>
-        <a class="login-pill" href="../archivosHTML/login.html">Iniciar Sesión</a>
-      </div>
-      <h1 class="title">CAFETERIA UTHH</h1>
-    </header>
+    
+ <?php include 'header.php'; ?>
+ 
 
-    <!-- Menú de navegación (Opcional: puedes quitarlo si quieres que sea solo registro) -->
-    <nav class="nav">
-      <div class="nav__wrap">
-        <a class="pill" href="../index.html"><span class="ico">🏠</span> HOME</a>
-        <a class="pill" href="../archivosHTML/productos.html"><span class="ico">📦</span> PRODUCTOS</a>
-        <a class="pill" href="../archivosHTML/menu.html"><span class="ico">🍽️</span> MENÚ</a>
-      </div>
-    </nav>
+        <?php include 'barra_navegacion.php'; ?>
+     
 
     <main class="content">
       <!-- ÚNICO CONTENEDOR: FORMULARIO DE REGISTRO -->
@@ -99,13 +86,7 @@ require_once __DIR__ . '/conexion.php';
     </main>
   </div>
 
-  <footer class="footer">
-    <p>Universidad Tecnológica de la Huasteca Hidalguense</p>
-    <p>&copy; 2025 Cafetería UTHH. Todos los derechos reservados.</p>
-    <form action="../archivosHTML/contacto.html" method="get">
-      <button type="submit" class="btn-contacto">Contáctanos</button>
-    </form>
-  </footer>
+   <?php include 'footer.php'; ?>
 </body>
 
 </html>
