@@ -22,8 +22,8 @@ $resultado = $conn->query($sql);
     <title>Términos y Condiciones – Cafetería UTHH</title>
 
     <link rel="stylesheet" href="../archivosCSS/layout.css?v=999.1" />
-
-
+    
+    
     <style>
         .page-title {
             text-align: center;
@@ -49,15 +49,14 @@ $resultado = $conn->query($sql);
             background: #fff;
             padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #2A9D8F;
-            /* Detalle de color */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid #2A9D8F; /* Detalle de color */
             transition: transform 0.2s;
         }
 
         .term-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
 
         .term-title {
@@ -74,54 +73,51 @@ $resultado = $conn->query($sql);
             line-height: 1.6;
             text-align: justify;
         }
-
-        body {
-            background-color: #f3efe6;
-        }
+        
+        body { background-color: #f3efe6; }
     </style>
 </head>
 
 <body>
-    <?php include 'header.php'; ?>
+   <?php include 'header.php'; ?>
 
+        
+        <?php include 'barra_navegacion.php'; ?>
+    
+        <main class="content">
+            <h2 class="page-title">Términos y Condiciones de Uso</h2>
 
-    <?php include 'barra_navegacion.php'; ?>
-
-    <main class="content">
-        <h2 class="page-title">Términos y Condiciones de Uso</h2>
-
-        <div class="terms-container">
-            <div class="terms-grid">
-                <?php
-                if ($resultado && $resultado->num_rows > 0) {
-                    while ($row = $resultado->fetch_assoc()) {
-                ?>
-                        <div class="term-card">
-                            <div class="term-title">
-                                <?php echo htmlspecialchars($row['vchTitulo']); ?>
+            <div class="terms-container">
+                <div class="terms-grid">
+                    <?php
+                    if ($resultado && $resultado->num_rows > 0) {
+                        while ($row = $resultado->fetch_assoc()) {
+                    ?>
+                            <div class="term-card">
+                                <div class="term-title">
+                                    <?php echo htmlspecialchars($row['vchTitulo']); ?>
+                                </div>
+                                <div class="term-desc">
+                                    <?php echo nl2br(htmlspecialchars($row['txtDescripcion'])); ?>
+                                </div>
                             </div>
-                            <div class="term-desc">
-                                <?php echo nl2br(htmlspecialchars($row['txtDescripcion'])); ?>
-                            </div>
-                        </div>
-                <?php
-                    }
-                } else {
-                    echo "<div class='term-card' style='text-align:center;'>
+                    <?php
+                        }
+                    } else {
+                        echo "<div class='term-card' style='text-align:center;'>
                                 <p>No hay términos y condiciones registrados por el momento.</p>
-                            </div>";
-                }
-                ?>
+                              </div>";
+                    }
+                    ?>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
     </div>
 
     <?php include 'footer.php'; ?>
 
 </body>
-
 </html>
-<?php
-if (isset($conn)) $conn->close();
+<?php 
+if(isset($conn)) $conn->close(); 
 ?>

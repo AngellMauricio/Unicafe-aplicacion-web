@@ -26,9 +26,9 @@ if (
     }
 }
 
-/*
+/* =============================
    OBTENER TODOS LOS PLATILLOS AGRUPADOS POR CATEGORÍA
-   */
+   ============================= */
 $sql = "SELECT * FROM tblmenu ORDER BY vchCategoria, vchNombre";
 $res = $conn->query($sql);
 

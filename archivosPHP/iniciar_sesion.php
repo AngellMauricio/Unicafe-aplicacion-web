@@ -10,9 +10,10 @@ require_once __DIR__ . '/conexion.php';
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cafetería UTHH – Acceso</title>
-  <link rel="stylesheet" href="/archivosCSS/login.css" />
-  <link rel="stylesheet" href="/archivosCSS/accesibilidad.css" />
-  <link rel="stylesheet" href="/archivosCSS/footer.css" /> 
+  <link rel="stylesheet" href="/archivosCSS/layout.css?v=<?php echo time(); ?>" />
+  <link rel="stylesheet" href="/archivosCSS/login.css?v=<?php echo time(); ?>" />
+  
+
 </head>
 <body>
   <header class="topbar">

@@ -6,7 +6,7 @@ $usuario_logueado = isset($_SESSION['usuario']);
 $nombre_usuario = $usuario_logueado ? $_SESSION['usuario'] : '';
 
 // 2. CONEXIÓN A BD
-require_once __DIR__ . '/conexion.php';
+require_once __DIR__ . '/conexion.php'; 
 
 // 3. CONSULTA DE PRODUCTOS
 $sql = "SELECT vchNombre, vchDescripcion, intStock, decPrecioVenta, vchImagen 
@@ -27,14 +27,14 @@ $resultado_productos = $conn->query($sql);
   <link rel="stylesheet" href="../archivosCSS/layout.css?v=999.1" />
   <link rel="stylesheet" href="../archivosCSS/productos.css?v=999.1" />
 
-
+  
   <link rel="stylesheet" href="../archivosCSS/ventanaEmergente.css" />
 </head>
 
 <body>
   <div class="app">
 
-    <?php include 'header.php'; ?>
+     <?php include 'header.php'; ?>
 
     <?php include 'barra_navegacion.php'; ?>
 
@@ -71,9 +71,9 @@ $resultado_productos = $conn->query($sql);
 
               <ul class="product__text">
                 <li><strong><?php echo htmlspecialchars($fila['vchNombre']); ?></strong></li>
-
+                
                 <li><?php echo htmlspecialchars(substr($fila['vchDescripcion'], 0, 50)) . '...'; ?></li>
-
+                
                 <li class="price">$<?php echo number_format($fila['decPrecioVenta'], 2); ?> MXN</li>
               </ul>
             </article>
@@ -85,8 +85,7 @@ $resultado_productos = $conn->query($sql);
         }
         ?>
 
-      </div>
-    </main>
+      </div> </main>
   </div>
 
   <?php include "footer.php"; ?>
@@ -137,7 +136,6 @@ $resultado_productos = $conn->query($sql);
   </script>
 
 </body>
-
 </html>
 <?php
 if (isset($conn) && $conn instanceof mysqli) {

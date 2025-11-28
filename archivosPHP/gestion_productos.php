@@ -5,32 +5,50 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 if ($_SESSION['rol_id'] != 1) {
-    // Si está logueado pero NO es admin, mándalo al inicio o muestra error
     echo "<script>alert('Acceso denegado: Solo administradores.'); window.location.href='../index.php';</script>";
     exit();
 }
 
-
-// TODOS LOS PHP ESTÁN EN LA MISMA CARPETA:
 require_once __DIR__ . '/conexion.php';
-// --- 1. OBTENER DATOS PARA LISTAS ---
+
+// --- 0. LÓGICA DE MENSAJES ---
+$mensaje = "";
+$clase_alerta = "";
+
+if (isset($_GET['mensaje'])) {
+    switch ($_GET['mensaje']) {
+        case 'agregado':
+            $mensaje = "✅ ¡Producto agregado exitosamente!";
+            $clase_alerta = "success";
+            break;
+        case 'actualizado':
+            $mensaje = "✅ ¡Producto modificado exitosamente!";
+            $clase_alerta = "success";
+            break;
+        case 'eliminado':
+            $mensaje = "🗑️ ¡Producto eliminado exitosamente!";
+            $clase_alerta = "success";
+            break;
+        case 'error':
+            $mensaje = "❌ Ocurrió un error al procesar la solicitud.";
+            $clase_alerta = "error";
+            break;
+    }
+}
+
+// --- 1. OBTENER DATOS ---
 $sql_categorias = "SELECT intIdCategoria, vchCategoria FROM tblcategorias";
 $res_categorias = $conn->query($sql_categorias);
 
 $sql_proveedores = "SELECT vchRFC, vchEmpresa FROM tblproveedores";
 $res_proveedores = $conn->query($sql_proveedores);
 
-// --- 2. LÓGICA PARA EDICIÓN ---
+// --- 2. LÓGICA DE EDICIÓN ---
 $modo_edicion = false;
 $id_prod_editar = 0;
-$nom_val = "";
-$desc_val = "";
-$stock_val = "";
-$pcompra_val = "";
-$pventa_val = "";
-$cat_val = "";
-$prov_val = "";
-$img_val = ""; // Variable para la imagen
+$nom_val = ""; $desc_val = ""; $stock_val = ""; 
+$pcompra_val = ""; $pventa_val = ""; $cat_val = ""; 
+$prov_val = ""; $img_val = ""; 
 
 $accion_form = "procesar_producto.php?accion=agregar";
 
@@ -52,12 +70,12 @@ if (isset($_GET['accion']) && $_GET['accion'] == 'editar' && isset($_GET['id']))
         $pventa_val = $fila['decPrecioVenta'];
         $cat_val = $fila['intIdCategoria'];
         $prov_val = $fila['vchRFCProveedor'];
-        $img_val = $fila['vchImagen']; // Recuperamos la ruta de la imagen
+        $img_val = $fila['vchImagen']; 
     }
     $stmt->close();
 }
 
-// --- 3. LÓGICA PARA EL LISTADO ---
+// --- 3. LISTADO ---
 $sql_lista = "SELECT P.intIdProducto, P.vchNombre, P.intStock, P.decPrecioVenta, P.vchImagen,
                     C.vchCategoria, PR.vchEmpresa 
             FROM tblproductos P
@@ -72,63 +90,33 @@ $res_lista = $conn->query($sql_lista);
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../archivosCSS/layout.css?v=999.1">
-    <link rel="stylesheet" href="../archivosCSS/registro.css">
-    <link rel="stylesheet" href="../archivosCSS/gestion_productos.css">
-
-    <style>
-        /* --- ESTILO NUEVO PARA EL BOTÓN DE VISTA PREVIA --- */
-        .header-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-            /* Línea separadora sutil */
-            padding-bottom: 10px;
-        }
-
-        /* Ajuste para que el título no tenga margen superior que descuadre */
-        .header-flex h2 {
-            margin: 0;
-            color: #765433;
-            /* Tu color café */
-        }
-
-        .btn-preview {
-            background-color: #2A9D8F;
-            /* Color corporativo */
-            color: white !important;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .btn-preview:hover {
-            background-color: #21867a;
-            transform: translateY(-2px);
-        }
-    </style>
+    <title>Gestión Productos — Cafetería UTHH</title>
+    
+    <link rel="stylesheet" href="../archivosCSS/layout.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../archivosCSS/registro.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../archivosCSS/gestion_productos.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
     <div class="app">
 
         <?php include 'header.php'; ?>
-
         <?php include 'barra_navegacion.php'; ?>
-
 
         <main class="content">
 
-            <!-- FORMULARIO -->
+            <?php if (!empty($mensaje)): ?>
+                <div class="alert <?php echo $clase_alerta; ?>">
+                    <?php echo $mensaje; ?>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        const alert = document.querySelector('.alert');
+                        if(alert) alert.style.display = 'none';
+                    }, 5000);
+                </script>
+            <?php endif; ?>
+
             <div class="form-container">
                 <div class="header-flex">
                     <h2><?php echo $modo_edicion ? 'Modificar Producto' : 'Agregar Nuevo Producto'; ?></h2>
@@ -137,81 +125,82 @@ $res_lista = $conn->query($sql_lista);
                         👁️ Ver Catálogo
                     </a>
                 </div>
-                <!-- IMPORTANTE: enctype="multipart/form-data" es necesario para subir archivos -->
+                
                 <form action="<?php echo $accion_form; ?>" method="post" enctype="multipart/form-data">
-                    <div class="form-grid">
+    <div class="form-grid">
 
-                        <!-- COLUMNA 1 -->
-                        <div class="form-column">
-                            <div class="form-row"><label>Nombre</label><input type="text" name="nombre" value="<?php echo $nom_val; ?>" required /></div>
-                            <div class="form-row"><label>Descripción</label><input type="text" name="descripcion" value="<?php echo $desc_val; ?>" required /></div>
+        <div class="form-column">
+            <div class="form-row">
+                <label>Nombre</label>
+                <input type="text" name="nombre" value="<?php echo $nom_val; ?>" required />
+            </div>
+            <div class="form-row">
+                <label>Descripción</label>
+                <input type="text" name="descripcion" value="<?php echo $desc_val; ?>" required />
+            </div>
+            <div class="form-row">
+                <label>Categoría</label>
+                <select name="categoria" required>
+                    <option value="">Seleccionar...</option>
+                    <?php
+                    $res_categorias->data_seek(0);
+                    while ($cat = $res_categorias->fetch_assoc()): ?>
+                        <option value="<?php echo $cat['intIdCategoria']; ?>"
+                            <?php echo ($cat_val == $cat['intIdCategoria']) ? 'selected' : ''; ?>>
+                            <?php echo $cat['vchCategoria']; ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Stock</label>
+                <input type="number" name="stock" value="<?php echo $stock_val; ?>" required min="0" 
+       oninput="this.value = Math.abs(this.value)" />
+            </div>
+            
+            <div class="form-row"> 
+    <label>Precio Compra</label>
+    <input type="number" step="0.01" name="precio_compra" value="<?php echo $pcompra_val; ?>" required min="0" />
+</div>
 
-                            <div class="form-row">
-                                <label>Categoría</label>
-                                <select name="categoria" required>
-                                    <option value="">Seleccionar...</option>
-                                    <?php
-                                    $res_categorias->data_seek(0);
-                                    while ($cat = $res_categorias->fetch_assoc()): ?>
-                                        <option value="<?php echo $cat['intIdCategoria']; ?>"
-                                            <?php echo ($cat_val == $cat['intIdCategoria']) ? 'selected' : ''; ?>>
-                                            <?php echo $cat['vchCategoria']; ?>
-                                        </option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-
-                            <div class="form-row"><label>Stock</label><input type="number" name="stock" value="<?php echo $stock_val; ?>" required /></div>
-
-                            <div class="actions">
-                                <button class="btn-action btn-add" type="submit">
-                                    <?php echo $modo_edicion ? 'Guardar Cambios' : 'Agregar Producto'; ?>
-                                </button>
-                                <?php if ($modo_edicion): ?>
-                                    <a href="gestion_productos.php" class="btn-action form-cancel-btn">Cancelar</a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- COLUMNA 2 -->
-                        <div class="form-column">
-                            <div class="form-row"><label>Precio Compra</label><input type="number" step="0.01" name="precio_compra" value="<?php echo $pcompra_val; ?>" required /></div>
-                            <div class="form-row"><label>Precio Venta</label><input type="number" step="0.01" name="precio_venta" value="<?php echo $pventa_val; ?>" required /></div>
-
-                            <div class="form-row">
-                                <label>Proveedor</label>
-                                <select name="proveedor" required>
-                                    <option value="">Seleccionar...</option>
-                                    <?php
-                                    $res_proveedores->data_seek(0);
-                                    while ($prov = $res_proveedores->fetch_assoc()): ?>
-                                        <option value="<?php echo $prov['vchRFC']; ?>"
-                                            <?php echo ($prov_val == $prov['vchRFC']) ? 'selected' : ''; ?>>
-                                            <?php echo $prov['vchEmpresa']; ?>
-                                        </option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-
-                            <!-- ÁREA DE IMAGEN (Reemplaza al data-area vacío) -->
-                            <div class="image-upload-area">
-                                <!-- Previsualización -->
-                                <img id="preview" src="<?php echo !empty($img_val) ? '../' . $img_val : 'https://placehold.co/300x200?text=Sin+Imagen'; ?>" alt="Vista previa">
-
-                                <!-- Input para subir archivo -->
-                                <label style="color: white; font-size: 0.9rem; margin-bottom: 5px;">Subir Imagen:</label>
-                                <input type="file" name="imagen" class="image-input" accept="image/*" onchange="mostrarVistaPrevia(event)">
-
-                                <!-- Input oculto para mantener la imagen anterior al editar si no se sube una nueva -->
-                                <input type="hidden" name="imagen_actual" value="<?php echo $img_val; ?>">
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
+<div class="form-row"> 
+    <label>Precio Venta</label>
+    <input type="number" step="0.01" name="precio_venta" value="<?php echo $pventa_val; ?>" required min="0" />
+</div>
+            <div class="form-row">
+                <label>Proveedor</label>
+                <select name="proveedor" required>
+                    <option value="">Seleccionar...</option>
+                    <?php
+                    $res_proveedores->data_seek(0);
+                    while ($prov = $res_proveedores->fetch_assoc()): ?>
+                        <option value="<?php echo $prov['vchRFC']; ?>"
+                            <?php echo ($prov_val == $prov['vchRFC']) ? 'selected' : ''; ?>>
+                            <?php echo $prov['vchEmpresa']; ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
             </div>
 
-            <!-- LISTA -->
+            <div class="image-upload-area">
+                 <img id="preview" src="<?php echo !empty($img_val) ? '../' . $img_val : 'https://placehold.co/300x200?text=Sin+Imagen'; ?>" alt="Vista previa">
+                 <label style="color: white; font-size: 0.9rem; margin-bottom: 5px;">Subir Imagen:</label>
+                 <input type="file" name="imagen" class="image-input" accept="image/*" onchange="mostrarVistaPrevia(event)">
+                 <input type="hidden" name="imagen_actual" value="<?php echo $img_val; ?>">
+            </div>
+
+        </div> </div> <div class="actions">
+        <button class="btn-action btn-add" type="submit">
+            <?php echo $modo_edicion ? 'Guardar Cambios' : 'Agregar Producto'; ?>
+        </button>
+        <?php if ($modo_edicion): ?>
+            <a href="gestion_productos.php" class="btn-action form-cancel-btn">Cancelar</a>
+        <?php endif; ?>
+    </div>
+
+</form>
+            </div>
+
             <div class="list-container">
                 <h2>Inventario Actual</h2>
 
@@ -228,43 +217,47 @@ $res_lista = $conn->query($sql_lista);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if ($res_lista && $res_lista->num_rows > 0): ?>
-                            <?php while ($row = $res_lista->fetch_assoc()): ?>
-                                <tr>
-                                    <td><?php echo $row['intIdProducto']; ?></td>
-                                    <td>
-                                        <?php if (!empty($row['vchImagen'])): ?>
-                                            <img src="../<?php echo $row['vchImagen']; ?>" class="thumb-img" alt="img">
-                                        <?php else: ?>
-                                            <span>🚫</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($row['vchNombre']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['vchCategoria']); ?></td>
-                                    <td style="<?php echo ($row['intStock'] < 10) ? 'color:red; font-weight:bold;' : ''; ?>">
-                                        <?php echo $row['intStock']; ?>
-                                    </td>
-                                    <td>$<?php echo number_format($row['decPrecioVenta'], 2); ?></td>
-                                    <td class='action-links'>
-                                        <a href="gestion_productos.php?accion=editar&id=<?php echo $row['intIdProducto']; ?>" class="edit-link">Modificar</a>
-                                        <a href="procesar_producto.php?accion=eliminar&id=<?php echo $row['intIdProducto']; ?>"
-                                            class="delete-link" onclick="return confirm('¿Eliminar permanentemente?');">Eliminar</a>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="7">No hay productos registrados.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
+    <?php if ($res_lista && $res_lista->num_rows > 0): ?>
+        <?php while ($row = $res_lista->fetch_assoc()): ?>
+            <tr>
+                <td data-label="ID"><?php echo $row['intIdProducto']; ?></td>
+                
+                <td data-label="Imagen">
+                    <?php if (!empty($row['vchImagen'])): ?>
+                        <img src="../<?php echo $row['vchImagen']; ?>" class="thumb-img" alt="img">
+                    <?php else: ?>
+                        <span>🚫</span>
+                    <?php endif; ?>
+                </td>
+                
+                <td data-label="Producto"><?php echo htmlspecialchars($row['vchNombre']); ?></td>
+                <td data-label="Categoría"><?php echo htmlspecialchars($row['vchCategoria']); ?></td>
+                
+                <td data-label="Stock" style="<?php echo ($row['intStock'] < 10) ? 'color:red; font-weight:bold;' : ''; ?>">
+                    <?php echo $row['intStock']; ?>
+                </td>
+                
+                <td data-label="P. Venta">$<?php echo number_format($row['decPrecioVenta'], 2); ?></td>
+                
+                <td data-label="Acciones" class='action-links'>
+                    <a href="gestion_productos.php?accion=editar&id=<?php echo $row['intIdProducto']; ?>" class="edit-link">Modificar</a>
+                    <a href="procesar_producto.php?accion=eliminar&id=<?php echo $row['intIdProducto']; ?>"
+                       class="delete-link" onclick="return confirm('¿Eliminar permanentemente?');">Eliminar</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7">No hay productos registrados.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
                 </table>
             </div>
 
         </main>
     </div>
 
-    <!-- Script simple para vista previa de imagen -->
     <script>
         function mostrarVistaPrevia(event) {
             var reader = new FileReader();
@@ -282,3 +275,4 @@ $res_lista = $conn->query($sql_lista);
 if (isset($conn) && $conn instanceof mysqli) {
     $conn->close();
 }
+?>

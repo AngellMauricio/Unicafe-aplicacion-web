@@ -51,10 +51,7 @@ $rol = isset($_SESSION['rol_id']) ? $_SESSION['rol_id'] : 0;
            GESTIONAR PEDIDOS <span class="ico">👨‍🍳</span>
         </a>
         
-        <a class="pill <?php echo ($pagina_actual == 'gestion_productos.php') ? 'is-active' : ''; ?>" 
-           href="<?php echo $p_php; ?>gestion_productos.php">
-           VER INVENTARIO <span class="ico">📋</span>
-        </a>
+        
     <?php endif; ?>
 
 
@@ -67,7 +64,7 @@ $rol = isset($_SESSION['rol_id']) ? $_SESSION['rol_id'] : 0;
 
         <a class="pill <?php echo ($pagina_actual == 'gestion_productos.php') ? 'is-active' : ''; ?>" 
            href="<?php echo $p_php; ?>gestion_productos.php" title="Editar Productos">
-           ⚙️ PROD.
+           ⚙️ PRODUCTOS
         </a>
            
         <a class="pill <?php echo ($pagina_actual == 'gestion_terminos.php') ? 'is-active' : ''; ?>" 
@@ -79,7 +76,10 @@ $rol = isset($_SESSION['rol_id']) ? $_SESSION['rol_id'] : 0;
            href="<?php echo $p_php; ?>editar_aviso.php" title="Editar Aviso Privacidad">
            ⚙️ AVISO
         </a>
-        <a class="pill" href="<?php echo $p_php; ?>gestion_somos.php">🏢 SOMOS</a>
+        <a class="pill <?php echo ($pagina_actual == 'gestion_somos.php') ? 'is-active' : ''; ?>" 
+           href="<?php echo $p_php; ?>gestion_somos.php" title="Editar APARTADO SOMOS">
+           ⚙️ SOMOS
+        </a>
         <a class="pill <?php echo ($pagina_actual == 'usuarios.php') ? 'is-active' : ''; ?>" 
            href="<?php echo $p_php; ?>usuarios.php" title="Gestionar Usuarios">
            REGISTROS <span class="ico">👤</span>

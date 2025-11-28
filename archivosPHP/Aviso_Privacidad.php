@@ -23,10 +23,8 @@ $contenido_aviso = $fila['contenido'] ?? '<p>No hay información disponible.</p>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aviso de Privacidad — Cafetería UTHH</title>
   
-  <link rel="stylesheet" href="../archivosCSS/home.css?v=3.5" />
-  <link rel="stylesheet" href="../archivosCSS/menu_desplegable.css" />
-  <link rel="stylesheet" href="../archivosCSS/footer.css?v=3.6" />
-  <link rel="stylesheet" href="../archivosCSS/accesibilidad.css" />
+  <link rel="stylesheet" href="../archivosCSS/layout.css?v=3.5" />
+ 
   
   <style>
     .privacy-container {
@@ -56,26 +54,7 @@ $contenido_aviso = $fila['contenido'] ?? '<p>No hay información disponible.</p>
 <body>
   <div class="app">
     
-    <header class="topbar">
-      <div class="topbar__left">
-        <span class="avatar">👤</span>
-        
-        <?php if ($usuario_logueado): ?>
-            <div class="user-dropdown">
-                <span class="user-trigger">Hola, <?php echo htmlspecialchars($nombre_usuario); ?> ▼</span>
-                <div class="dropdown-content">
-                    <a href="mi_cuenta.php">⚙️ Mi Cuenta</a>
-                    <a href="logout.php">🚪 Cerrar Sesión</a>
-                </div>
-            </div>
-        <?php else: ?>
-            <a class="login-pill" href="../archivosHTML/login.html">Iniciar Sesión</a>
-        <?php endif; ?>
-        
-      </div>
-      <h1 class="title">CAFETERIA UTHH</h1>
-      <div class="topbar__right"></div>
-    </header>
+    <?php include 'header.php'; ?>
 
     <?php include 'barra_navegacion.php'; ?>
 
@@ -94,19 +73,6 @@ $contenido_aviso = $fila['contenido'] ?? '<p>No hay información disponible.</p>
         </div>
     </main>
   </div>
-
   <?php include 'footer.php'; ?>
-  
-  <button id="btn-voz" class="voice-btn" aria-label="Escuchar contenido">🔊 Escuchar Contenido</button>
-  
-  <script src="../archivosJS/lector_voz.js"></script>
-  <script src="../archivosJS/accesibilidad.js"></script>
-
-  <div class="accessibility-panel">
-    <button id="btn-zoom-in">A+</button>
-    <button id="btn-zoom-reset">↺</button>
-    <button id="btn-zoom-out">A-</button>
-    <button id="btn-contrast" style="margin-top: 5px; border-color: #2a9d8f; color: #2a9d8f">🌗</button>
-  </div>
 </body>
 </html>

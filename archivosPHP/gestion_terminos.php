@@ -1,8 +1,8 @@
 <?php
-session_start(); // Necesario para verificar $_SESSION
-include 'conexion.php';
+session_start();
+require_once __DIR__ . '/conexion.php';
 
-// Lógica de Edición
+// --- LÓGICA PHP ---
 $modo_edicion = false;
 $id_editar = 0;
 $titulo_val = "";
@@ -24,170 +24,113 @@ if (isset($_GET['accion']) && $_GET['accion'] == 'editar' && isset($_GET['id']))
     }
 }
 
-// Listado
+// Mensaje de alerta
+$mensaje = "";
+$clase_alerta = "";
+if (isset($_GET['mensaje'])) {
+    switch ($_GET['mensaje']) {
+        case 'agregado': $mensaje = "✅ ¡Término agregado!"; $clase_alerta = "success"; break;
+        case 'actualizado': $mensaje = "✅ ¡Término actualizado!"; $clase_alerta = "success"; break;
+        case 'eliminado': $mensaje = "🗑️ ¡Término eliminado!"; $clase_alerta = "success"; break;
+        case 'error': $mensaje = "❌ Error en el proceso"; $clase_alerta = "error"; break;
+    }
+}
+
 $sql_lista = "SELECT * FROM tblterminos";
 $res_lista = $conn->query($sql_lista);
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8" />
     <title>Gestionar Términos — Cafetería UTHH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     
-    <link rel="stylesheet" href="../archivosCSS/layout.css?v=999.1">
-    <link rel="stylesheet" href="../archivosCSS/registro.css">
-    
-    <!-- Reutilizamos estilos de admin -->
-    <!-- <link rel="stylesheet" href="../archivosCSS/gestion_terminos.css">  <- Este no existe, usa estilos en línea o registro.css -->
-    <style>
-        /* Estilos específicos para esta página si no usas gestion_terminos.css */
-        .list-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: #fff;
-            border-radius: 8px;
-        }
+    <link rel="stylesheet" href="../archivosCSS/layout.css?v=<?php echo time(); ?>">
+     <link rel="stylesheet" href="../archivosCSS/gestion_terminos.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .user-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-        .user-table th,
-        .user-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .user-table th {
-            background: #f4f4f4;
-        }
-
-        .action-links a {
-            margin-right: 10px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .edit-link {
-            color: #007bff;
-        }
-
-        .delete-link {
-            color: #dc3545;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #c8c8c8;
-            border-radius: 4px;
-            min-height: 100px;
-            font-family: inherit;
-        }
-
-        /* --- Estilos para el botón de Vista Previa --- */
-        .header-flex {
-            display: flex;
-            justify-content: space-between;
-            /* Separa título a la izq y botón a la der */
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .btn-preview {
-            background-color: #2A9D8F;
-            /* Tu color verde azulado característico */
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background 0.2s;
-        }
-
-        .btn-preview:hover {
-            background-color: #21867a;
-            /* Un poco más oscuro al pasar el mouse */
-            transform: translateY(-1px);
-        }
-    </style>
+   
 </head>
 
 <body>
     <div class="app">
         <?php include '../archivosPHP/header.php'; ?>
         <?php include '../archivosPHP/barra_navegacion.php'; ?>
+        
         <main class="content">
-            <div class="form-container">
-                <h2><?php echo $modo_edicion ? 'Editar Término' : 'Agregar Nuevo Término'; ?></h2>
+            
+            <?php if (!empty($mensaje)): ?>
+                <div class="alert <?php echo $clase_alerta; ?>">
+                    <?php echo $mensaje; ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="admin-card">
+                <h2><i class="fa-solid fa-pen-to-square"></i> <?php echo $modo_edicion ? 'Editar Término' : 'Agregar Nuevo Término'; ?></h2>
 
                 <form action="<?php echo $accion_form; ?>" method="post">
-                    <div class="form-grid" style="grid-template-columns: 1fr;">
-                        <div class="form-column">
-                            <div class="form-row">
-                                <label>Título</label>
-                                <input type="text" name="titulo" value="<?php echo $titulo_val; ?>" required placeholder="Ej: Uso permitido">
-                            </div>
-                            <div class="form-row" style="align-items: flex-start;">
-                                <label>Descripción</label>
-                                <textarea name="descripcion" required><?php echo $desc_val; ?></textarea>
-                            </div>
+                    
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" name="titulo" value="<?php echo $titulo_val; ?>" required placeholder="Ej: Uso permitido">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea name="descripcion" rows="5" required placeholder="Escribe el contenido..."><?php echo $desc_val; ?></textarea>
+                    </div>
 
-                            <div class="actions" style="justify-content: flex-start; gap: 10px; align-items: center;">
+                    <div class="btn-toolbar">
+                        <button class="btn-primary" type="submit">
+                            <?php echo $modo_edicion ? 'Guardar Cambios' : 'Agregar'; ?>
+                        </button>
 
-                                <button class="btn-action btn-add" type="submit">
-                                    <?php echo $modo_edicion ? 'Guardar Cambios' : 'Agregar'; ?>
-                                </button>
+                        <a href="terminos.php" target="_blank" class="btn-secondary">
+                            <i class="fa-solid fa-eye"></i> Ver como Usuario
+                        </a>
 
-                                <a href="terminos.php" target="_blank" class="btn-action btn-preview">
-                                    👁️ Ver como Usuario
-                                </a>
-
-                                <?php if ($modo_edicion): ?>
-                                    <a href="gestion_terminos.php" class="btn-action form-cancel-btn">Cancelar</a>
-                                <?php endif; ?>
-                            </div>
-
-                        </div>
+                        <?php if ($modo_edicion): ?>
+                            <a href="gestion_terminos.php" class="btn-cancel">Cancelar</a>
+                        <?php endif; ?>
                     </div>
                 </form>
             </div>
 
-            <div class="list-container">
-                <h2>Listado de Términos y Condiciones</h2>
-                <table class="user-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 20%;">Título</th>
-                            <th>Descripción</th>
-                            <th style="width: 15%;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $res_lista->fetch_assoc()): ?>
+            <div class="admin-card">
+                <h2>Listado de Términos</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
                             <tr>
-                                <td><strong><?php echo htmlspecialchars($row['vchTitulo']); ?></strong></td>
-                                <td><?php echo nl2br(htmlspecialchars($row['txtDescripcion'])); ?></td>
-                                <td class="action-links">
-                                    <a href="gestion_terminos.php?accion=editar&id=<?php echo $row['intIdTermino']; ?>" class="edit-link">Editar</a>
-                                    <a href="procesar_terminos.php?accion=eliminar&id=<?php echo $row['intIdTermino']; ?>" class="delete-link" onclick="return confirm('¿Borrar este punto?');">Eliminar</a>
-                                </td>
+                                <th style="width: 25%;">Título</th>
+                                <th style="width: 55%;">Descripción</th>
+                                <th style="width: 20%;">Acciones</th>
                             </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $res_lista->fetch_assoc()): ?>
+                                <tr>
+                                    <td><strong><?php echo htmlspecialchars($row['vchTitulo']); ?></strong></td>
+                                    <td><?php echo nl2br(htmlspecialchars($row['txtDescripcion'])); ?></td>
+                                    <td class="actions-cell">
+                                        <a href="gestion_terminos.php?accion=editar&id=<?php echo $row['intIdTermino']; ?>" class="text-edit">Editar</a>
+                                        <a href="procesar_terminos.php?accion=eliminar&id=<?php echo $row['intIdTermino']; ?>" 
+                                           class="text-del" 
+                                           onclick="return confirm('¿Borrar este registro?');">Eliminar</a>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
 </body>
-
 </html>
-<?php $conn->close(); ?>
+<?php 
+if (isset($stmt)) $stmt->close();
+$conn->close(); 
+?>
