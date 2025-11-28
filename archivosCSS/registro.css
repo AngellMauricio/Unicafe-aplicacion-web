@@ -1,3 +1,6 @@
+/* =========================================
+   1. VARIABLES Y RESET (Tu base)
+   ========================================= */
 :root {
   --brown-a: #8a633b;
   --brown-b: #765433;
@@ -11,6 +14,7 @@
   --button-gray: #8a8686;
   --button-update: #8a8e8c;
   --table-bg: #8a8888;
+  --text-dark: #333333; /* Agregado para títulos oscuros */
 }
 
 * {
@@ -24,17 +28,22 @@ body {
   background: var(--cream);
   color: #1f1f1f;
   min-height: 100vh;
+  display: flex;           /* Agregado para mejor control vertical */
+  flex-direction: column;
 }
 
-/* TOPBAR */
+/* =========================================
+   2. TOPBAR (Barra superior)
+   ========================================= */
 .topbar {
   background: linear-gradient(180deg, var(--brown-a), var(--brown-b));
   color: #fff;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto; /* Izq - Centro - Der */
   align-items: center;
   padding: 10px 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+  position: relative; /* Para asegurar z-index si es necesario */
 }
 
 .topbar__left {
@@ -51,7 +60,7 @@ body {
   color: #5a3c7a;
   display: grid;
   place-items: center;
-  font-size: 18px;
+  font-size: 16px; /* Ajustado ligeramente */
   border: 2px solid rgba(0, 0, 0, .08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9);
 }
@@ -67,17 +76,22 @@ body {
   text-decoration: underline;
   border: 1px solid rgba(0, 0, 0, .08);
   box-shadow: 0 2px 0 rgba(0, 0, 0, .10), inset 0 1px 0 rgba(255, 255, 255, .9);
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .title {
-  font-size: 30px;
+  font-size: 28px; /* Ajustado para móviles pequeños */
   font-weight: 800;
   text-align: center;
   letter-spacing: .06em;
   margin: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
-/* NAV */
+/* =========================================
+   3. NAVEGACIÓN (Nav)
+   ========================================= */
 .nav {
   background: var(--nav-bg);
   display: flex;
@@ -88,18 +102,23 @@ body {
 .nav__wrap {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 30px; /* Reducido de 50px para que quepan mejor */
   flex-wrap: wrap;
 }
 
 .pill {
   background: #fff;
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 8px 16px;
   text-decoration: none;
-  color: #3a3a3a;
-  font-weight: 600;
+  color: #555;
+  font-weight: 700;
+  font-size: 14px;
   transition: background .2s ease, transform .15s ease;
+  display: flex;      /* Para alinear icono y texto */
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .pill:hover {
@@ -109,5 +128,154 @@ body {
 
 .pill.is-active {
   background: var(--accent);
-  color: #000;
+  color: #fff; /* Mejor contraste si el fondo es oscuro */
+}
+
+/* =========================================
+   4. TARJETA DE FORMULARIO (Lo que faltaba)
+   ========================================= */
+
+.main-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 1000px;
+  padding: 40px 50px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+  height: fit-content; /* Se ajusta al contenido */
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.card-header h2 {
+  color: var(--brown-b);
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.card-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+/* Grid de dos columnas para el contenido */
+.form-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 50px;
+  row-gap: 20px;
+}
+
+/* Estilo de cada fila (Label a la izquierda, Input a la derecha) */
+.input-group {
+  display: grid;
+  grid-template-columns: 140px 1fr; /* 140px para texto, el resto para input */
+  align-items: center;
+}
+
+.input-group label {
+  font-weight: 700;
+  color: #444;
+  font-size: 14px;
+}
+
+.input-group input {
+  background-color: var(--input-bg);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  width: 100%;
+  transition: border 0.3s;
+}
+
+.input-group input:focus {
+  border-color: var(--accent);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+}
+
+/* Botón de registro */
+.btn-submit-container {
+  display: flex;
+  justify-content: flex-end; /* Alineado a la derecha */
+  padding-top: 10px;
+}
+
+.btn-register {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-register:hover {
+  background-color: #21867a;
+}
+
+/* Link de pie de página */
+.form-footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-footer a {
+  color: var(--brown-b);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+/* =========================================
+   5. RESPONSIVE (Móviles)
+   ========================================= */
+@media (max-width: 768px) {
+  .topbar {
+    grid-template-columns: 1fr; /* Todo en una columna */
+    gap: 10px;
+    justify-items: center;
+  }
+  
+  .title {
+    order: -1; /* Título arriba del todo */
+    font-size: 24px;
+  }
+
+  .form-content {
+    grid-template-columns: 1fr; /* Una sola columna para el formulario */
+    gap: 20px;
+  }
+  
+  .input-group {
+    grid-template-columns: 1fr; /* Label arriba del input */
+    gap: 5px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .btn-submit-container {
+    justify-content: center;
+  }
 }

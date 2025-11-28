@@ -1,76 +1,170 @@
-.list-container {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* =========================================
+   1. ESTILOS DEL FORMULARIO (LO QUE FALTABA)
+   ========================================= */
+
+/* Contenedor principal tipo Tarjeta */
+.form-container {
+    background-color: #fdfbf7; /* Crema suave */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 1100px;
+    margin: 20px auto;
 }
-.user-table {
-  width: 100%;
-  margin-top: 1rem;
-  border-collapse: collapse;
-}
-.user-table th,
-.user-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-.user-table th {
-  background: #f4f4f4;
-}
-.user-table tr:nth-child(even) {
-  background: #f9f9f9;
-}
-.user-table .action-links a {
-  margin-right: 10px;
-  text-decoration: none;
-  font-weight: bold;
-}
-.action-links .edit-link {
-  color: #007bff;
-}
-.action-links .delete-link {
-  color: #dc3545;
-}
-.form-cancel-btn {
-  background: #6c757d;
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 10px;
-  border-radius: 6px;
-}
+
+/* Títulos */
 .form-container h2,
 .list-container h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #765433; /* Café institucional */
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
 }
-.form-column .actions {
-  margin-bottom: 0;
-  align-items: flex-start;
+
+/* Grid de dos columnas */
+.form-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
 }
-.form-column .data-area {
-  margin-top: 0;
+
+.form-column {
+    flex: 1;
+    min-width: 300px;
 }
+
+/* Filas de Inputs */
+.form-row {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row label {
+    font-weight: bold;
+    color: #5a4635;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"],
+.form-row input[type="tel"],
+.form-row select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+/* Botones del Formulario */
+.actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-action {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.btn-add {
+    background-color: #2A9D8F; /* Azul oscuro */
+}
+
+.btn-add:hover {
+    background-color: #21867a;
+}
+
+.form-cancel-btn {
+    background-color: #e76f51; /* Naranja */
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    flex: 1;
+    display: inline-block;
+}
+
+/* =========================================
+   2. TUS ESTILOS DE TABLA (ORIGINALES)
+   ========================================= */
+
+.list-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 1100px;
+    margin: 20px auto; /* Centrado */
+}
+
+.user-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+    border: 1px solid #ddd;
+    padding: 12px; /* Un poco más de espacio */
+    text-align: left;
+}
+
+.user-table th {
+    background: #765433; /* Cabecera café para combinar */
+    color: white;
+}
+
+.user-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* Enlaces de acciones */
+.action-links a {
+    margin-right: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.edit-link {
+    color: #fff;
+    background-color: #007bff;
+}
+
+.delete-link {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+/* Footer (Tu original) */
 footer {
-  background: #765433;
-  color: #fff;
-  text-align: center;
-  font-family: sans-serif;
-  font-size: 13px;
-  padding: 8px 0;
-  line-height: 1.6;
-}
-.btn-contacto {
-  background: #c59b42;
-  color: #fff;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-}
-.btn-contacto:hover {
-  background: #4d3925;
+    background: #765433;
+    color: #fff;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 13px;
+    padding: 15px 0;
+    line-height: 1.6;
+    margin-top: 40px;
 }

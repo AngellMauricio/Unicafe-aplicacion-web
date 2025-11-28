@@ -1,47 +1,216 @@
-        .list-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: #fff;
+/* =========================================
+   ESTILOS GESTIÓN DE TÉRMINOS
+   ========================================= */
+
+/* Fondo general */
+
+
+/* 1. ESTILO DE TARJETA (El cuadro blanco) */
+.admin-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 1100px;
+    margin: 30px auto;
+    border: 1px solid #e0e0e0;
+}
+
+.admin-card h2 {
+    font-size: 1.8rem;
+    color: #765433; /* Café */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    font-weight: 800;
+}
+
+/* 2. INPUTS Y TEXTAREA */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: #5a4635;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; 
+    background-color: #fdfdfd;
+    font-family: inherit;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: #2A9D8F;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+}
+
+/* 3. BOTONES (Colores fuertes) */
+.btn-toolbar {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    align-items: center;
+}
+
+button.btn-primary-custom {
+    background-color: #2A9D8F; /* Azul oscuro */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button.btn-primary-custom:hover { background-color: #21867a; }
+
+a.btn-secondary-custom {
+    background-color: #2A9D8F; /* Verde */
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    display: inline-block;
+}
+a.btn-secondary-custom:hover { background-color: #21867a; }
+
+a.btn-cancel-custom {
+    background-color: #e76f51; /* Naranja */
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* 4. TABLA */
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { background-color: #765433; color: white; padding: 15px; text-align: left; }
+td { border-bottom: 1px solid #ddd; padding: 15px; vertical-align: top; }
+tr:nth-child(even) { background-color: #f9f9f9; }
+
+/* Enlaces de Acción */
+.actions-cell a {
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 0.95rem;
+}
+.text-edit { color: #007bff; }
+.text-del { color: #dc3545; }
+.actions-cell a:hover { text-decoration: underline; }
+
+
+       
+
+        /* Tarjeta Blanca */
+        .admin-card {
+            background-color: #ffffff !important;
+            padding: 40px;
             border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 1100px;
+            margin: 30px auto;
+            border: 1px solid #e0e0e0;
         }
 
-        .user-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+        .admin-card h2 {
+            font-size: 1.8rem;
+            color: #765433;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-weight: 800;
         }
 
-        .user-table th,
-        .user-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .user-table th {
-            background: #f4f4f4;
-        }
-
-        .action-links a {
-            margin-right: 10px;
+        /* Inputs */
+        .form-group { margin-bottom: 20px; }
+        
+        .form-group label {
+            display: block;
             font-weight: bold;
-            text-decoration: none;
+            color: #5a4635;
+            margin-bottom: 8px;
         }
 
-        .edit-link {
-            color: #007bff;
-        }
-
-        .delete-link {
-            color: #dc3545;
-        }
-
-        textarea {
+        .form-group input, 
+        .form-group textarea {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #c8c8c8;
-            border-radius: 4px;
-            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Esto evita que se desborde */
             font-family: inherit;
         }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #2A9D8F;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+        }
+
+        /* Botones */
+        .btn-toolbar {
+            display: flex; gap: 15px; margin-top: 25px; align-items: center;
+        }
+
+        button.btn-primary {
+            background-color: #2A9D8F !important;
+            color: white !important;
+            border: none; padding: 12px 25px;
+            border-radius: 6px; font-weight: bold; cursor: pointer;
+        }
+
+        a.btn-secondary {
+            background-color: #2A9D8F !important;
+            color: white !important;
+            text-decoration: none; padding: 12px 25px;
+            border-radius: 6px; font-weight: bold;
+        }
+
+        a.btn-cancel {
+            background-color: #e76f51 !important;
+            color: white !important;
+            text-decoration: none; padding: 12px 25px;
+            border-radius: 6px; font-weight: bold;
+        }
+
+        /* Tabla */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background-color: #765433; color: white; padding: 15px; text-align: left; }
+        td { border-bottom: 1px solid #ddd; padding: 15px; vertical-align: top; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* Enlaces de tabla */
+        .actions-cell a {
+            text-decoration: none; font-weight: bold; margin-right: 15px;
+        }
+        .text-edit { color: #007bff !important; }
+        .text-del { color: #dc3545 !important; }
+
+        /* Alertas */
+        .alert {
+            padding: 15px; margin-bottom: 20px; border-radius: 8px;
+            text-align: center; font-weight: bold; max-width: 1100px; margin: 20px auto;
+        }
+        .alert.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    

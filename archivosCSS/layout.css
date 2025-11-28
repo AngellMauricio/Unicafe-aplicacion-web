@@ -508,3 +508,15 @@ body.modo-oscuro-acc {
 body.modo-oscuro-acc img {
     filter: invert(100%) hue-rotate(180deg);
 }
+/* Estilo para el botón de Editar */
+.btn-edit { 
+    background: #007bff; /* Azul */
+    color: white; 
+    padding: 5px 10px; 
+    text-decoration: none; 
+    border-radius: 4px; 
+    font-size: 0.9rem; 
+    margin-right: 10px; /* Separación con el botón de eliminar */
+}
+.btn-edit:hover { background: #0056b3; }
+

@@ -22,19 +22,27 @@ body{
 }
 
 /* ========== Topbar ========== */
-.topbar{
-  width:100%;
-  background:linear-gradient(180deg,var(--topbar-a),var(--topbar-b));
-  color:#fff;
-  padding:16px 24px;
-  text-align:center;
-  box-shadow:0 2px 4px rgba(0,0,0,.25);
+.topbar {
+  width: 100%;
+  background: linear-gradient(180deg, var(--topbar-a), var(--topbar-b));
+  color: #fff;
+  padding: 16px 24px;
+  
+  /* --- CAMBIOS PARA CENTRAR A LA FUERZA --- */
+  display: flex;             /* Activamos modo flexible */
+  justify-content: center;   /* Centra el contenido horizontalmente */
+  align-items: center;       /* Centra verticalmente */
+  /* ---------------------------------------- */
+  
+  box-shadow: 0 2px 4px rgba(0,0,0,.25);
 }
-.topbar h1{
-  margin:0;
-  letter-spacing:.06em;
-  font-size:28px;
-  font-weight:800;
+
+.topbar h1 {
+  margin: 0;
+  letter-spacing: .06em;
+  font-size: 28px;
+  font-weight: 800;
+  text-align: center; /* Aseguramos que el texto interno también se centre */
 }
 
 /* ========== Escenario central ========== */

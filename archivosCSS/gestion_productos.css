@@ -1,99 +1,415 @@
-        /* Estilos reutilizados */
-        .list-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
+/* =========================================
+   ESTILOS GESTIÓN DE PRODUCTOS
+   ========================================= */
+/* =========================================
+   ESTILOS GLOBALES DE INPUTS (Para PC y Móvil)
+   ========================================= */
 
-        .user-table {
-            width: 100%;
-            margin-top: 1rem;
-            border-collapse: collapse;
-        }
+/* Seleccionamos TODOS los inputs dentro de .form-row sin importar el tipo */
+.form-row input, 
+.form-row select, 
+.form-row textarea {
+    width: 100% !important;      /* !important obliga a usar el ancho total */
+    min-width: 100%;             /* Asegura que no se encoja nunca */
+    box-sizing: border-box;      /* El borde queda dentro de la medida */
+    height: 45px !important;     /* Altura idéntica para todos */
+    padding: 10px;               /* Relleno cómodo */
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    display: block;              /* Asegura que se comporte como bloque */
+    margin: 0;                   /* Elimina márgenes extraños del navegador */
+}
 
-        .user-table th,
-        .user-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            vertical-align: middle;
-        }
+/* Excepción: Si usas textarea para la descripción, permitimos cambiar la altura */
+.form-row textarea {
+    height: auto !important;
+    min-height: 45px;
+}
+/* --- 1. CONTENEDOR PRINCIPAL --- */
+.form-container {
+    background-color: #fdfbf7; 
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 1000px;
+    margin: 20px auto;
+}
 
-        .user-table th {
-            background-color: #f4f4f4;
-        }
+/* Cabecera del formulario (Título + Botón) */
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
 
-        .action-links .edit-link {
-            color: #007bff;
-            margin-right: 10px;
-            font-weight: bold;
-            text-decoration: none;
-        }
+.header-flex h2 {
+    margin: 0;
+    color: #765433; /* Café */
+}
 
-        .action-links .delete-link {
-            color: #dc3545;
-            font-weight: bold;
-            text-decoration: none;
-        }
+/* Botón "Ver Catálogo" */
+.btn-preview {
+    background-color: #2A9D8F;
+    color: white !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s, transform 0.2s;
+}
 
-        .form-cancel-btn {
-            background-color: #6c757d;
-            color: white;
-            text-decoration: none;
-        }
+.btn-preview:hover {
+    background-color: #21867a;
+    transform: translateY(-2px);
+}
 
-        .form-container h2,
-        .list-container h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
+/* --- 2. GRID DEL FORMULARIO (COLUMNAS) --- */
+.form-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
 
-        .form-column .actions {
-            margin-bottom: 0;
-            align-items: flex-start;
-        }
+.form-column {
+    flex: 1;
+    min-width: 300px;
+}
 
-        /* --- ESTILOS PARA EL ÁREA DE IMAGEN --- */
-        .image-upload-area {
-            background-color: #8a8888;
-            /* Mismo gris que tenías */
-            border: 2px dashed #b8a8a8;
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-top: 0;
-            /* Ajuste para alinear con columna */
-        }
+/* Filas de Inputs */
+.form-row {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
 
-        .image-upload-area img {
-            max-width: 100%;
-            max-height: 180px;
-            object-fit: contain;
-            border-radius: 4px;
-            display: block;
-            margin-bottom: 10px;
-        }
+.form-row label {
+    font-weight: bold;
+    color: #5a4635;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
 
-        .image-input {
-            width: 100%;
-            padding: 5px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 4px;
-        }
+.form-row input[type="text"],
+.form-row input[type="number"],
+.form-row select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+}
 
-        /* Miniatura en la tabla */
-        .thumb-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
+.form-row input:focus, 
+.form-row select:focus {
+    border-color: #2A9D8F;
+    outline: none;
+    box-shadow: 0 0 5px rgba(42, 157, 143, 0.3);
+}
+
+/* --- 3. ÁREA DE IMAGEN --- */
+.image-upload-area {
+    background-color: #8d8d8d;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #bbb;
+}
+
+#preview {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border: 4px solid #fff;
+}
+
+.image-input {
+    margin-top: 10px;
+    color: white;
+}
+
+/* --- 4. BOTONES DE ACCIÓN --- */
+.actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-action {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    flex: 1;
+    transition: background 0.3s;
+    color: white;
+}
+
+.btn-add { background-color: #2A9D8F; }
+.btn-add:hover { background-color: #21867a; }
+
+.form-cancel-btn {
+    background-color: #e76f51;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form-cancel-btn:hover { background-color: #d65a3b; }
+
+/* --- 5. ALERTAS (MENSAJES) --- */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* --- 6. TABLA --- */
+.list-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.user-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.user-table th { background-color: #f4f4f4; }
+
+.thumb-img {
+    width: 50px; height: 50px; object-fit: cover;
+    border-radius: 4px; border: 1px solid #ccc;
+}
+
+.action-links a {
+    text-decoration: none; font-weight: bold; margin-right: 10px;
+}
+.edit-link { color: #007bff; }
+.delete-link { color: #dc3545; }
+
+/* =========================================
+   RESPONSIVE TABLES (Estilo Tarjeta)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+    /* 1. Ocultar los encabezados de la tabla original */
+    .user-table thead {
+        display: none;
+    }
+
+    /* 2. Convertir la tabla y filas en bloques */
+    .user-table, .user-table tbody, .user-table tr, .user-table td {
+        display: block;
+        width: 100%;
+    }
+
+    /* 3. Estilo de cada "Tarjeta" (Fila) */
+    .user-table tr {
+        margin-bottom: 15px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        overflow: hidden; /* Para mantener bordes redondeados */
+    }
+
+    /* 4. Estilo de las celdas internas */
+    .user-table td {
+        text-align: right; /* Contenido a la derecha */
+        padding-left: 50%; /* Espacio para la etiqueta */
+        position: relative;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Quitar borde a la última celda de la tarjeta */
+    .user-table td:last-child {
+        border-bottom: 0;
+    }
+
+    /* 5. Insertar el título de la columna usando data-label */
+    .user-table td::before {
+        content: attr(data-label); /* Toma el texto del atributo HTML */
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #2A9D8F; /* Tu color principal */
+    }
+
+    /* Ajuste específico para la imagen en móvil */
+    .user-table td[data-label="Imagen"] {
+        text-align: center;
+        padding-left: 10px; /* Reset del padding */
+        background-color: #f9f9f9;
+    }
+    .user-table td[data-label="Imagen"]::before {
+        display: none; /* Ocultar etiqueta "Imagen" porque es obvio */
+    }
+    
+    /* Ajuste para los botones de acción para que se centren */
+    .user-table td[data-label="Acciones"] {
+        text-align: center;
+        padding-left: 10px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: #fdfbf7;
+    }
+    .user-table td[data-label="Acciones"]::before {
+        display: none;
+    }
+}
+
+/* =========================================
+   FORMULARIO RESPONSIVO (Registro)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* 1. Ajustar el contenedor principal del formulario */
+    .form-container {
+        padding: 15px; /* Menos relleno para ganar espacio */
+        width: 95%;    /* Que ocupe casi todo el ancho */
+        margin: 10px auto; /* Centrado */
+        box-sizing: border-box; /* Evita que el padding rompa el ancho */
+    }
+
+    /* 2. Cabecera (Título y Botón Ver Catálogo) */
+    .header-flex {
+        flex-direction: column; 
+        gap: 15px; 
+        text-align: center;
+        align-items: stretch;
+    }
+
+    .btn-preview {
+        width: 100%; 
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    /* 3. Columnas del Formulario (Inputs) */
+    .form-grid {
+        flex-direction: column; 
+        gap: 0; 
+    }
+
+    .form-column {
+        min-width: 100%; 
+        margin-bottom: 0;
+    }
+
+    /* 4. Ajustes visuales de los inputs */
+    .form-row {
+        margin-bottom: 12px;
+    }
+    
+    .form-row label {
+        font-size: 0.9rem; 
+    }
+
+    /* 5. Botones de acción (Agregar/Cancelar) */
+    .actions {
+        flex-direction: column; 
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .btn-action {
+        width: 100%; /* Botones de ancho completo para dedo fácil */
+    }
+
+    /* 6. Ajuste de la zona de imagen */
+    .image-upload-area {
+        margin-top: 12px;
+        padding: 12px;
+    }
+}
+
+/* Corrección global para que nada se salga de su caja */
+* {
+    box-sizing: border-box;
+}
+
+/* Forzar que los inputs nunca sean más anchos que la pantalla */
+input[type="text"],
+input[type="number"],
+select,
+.btn-action {
+    max-width: 100%; 
+    width: 100%;     
+
+/* Ajuste específico para móvil que vi en tu captura */
+@media screen and (max-width: 768px) {
+    .form-container {
+        width: 90%; /* Un poco de margen a los lados */
+        padding: 15px;
+        margin: 10px auto;
+        overflow: hidden; /* Corta cualquier cosa que intente salirse */
+    }
+    
+    .form-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Asegurar que la imagen no rompa el diseño */
+    #preview {
+        max-width: 100%;
+        height: auto;
+    }
+}
