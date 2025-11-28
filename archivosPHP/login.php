@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Contraseña incorrecta
             echo "<script>
                     alert('Contraseña incorrecta'); 
-                    window.location='../archivosHTML/login.html';
+                    window.location='iniciar_sesion.php';
                   </script>";
             exit;
         }
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Usuario no encontrado
         echo "<script>
                 alert('Usuario no encontrado'); 
-                window.location='../archivosHTML/login.html';
+                window.location='iniciar_sesion.php';
               </script>";
         exit;
     }
